@@ -10,6 +10,8 @@ const { catchErrors } = require('../handlers/errorHandlers');
 
 router.post('/user/getuser/:email', authController.hasToken, catchErrors(userController.getUserByEmail));
 router.post('/user/getusers', authController.hasToken, catchErrors(userController.getUsers));
+router.post('/user/updateusersettings', authController.hasToken, catchErrors(userController.updateUserSettings));
+
 router.post('/auth/authenticate', authController.authenticate);
 router.post('/auth/isauth', authController.isAuth);
 router.post('/auth/register',

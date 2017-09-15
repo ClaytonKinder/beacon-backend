@@ -22,14 +22,15 @@ exports.getUsers = async (req, res) => {
   res.status(200).json(users);
 }
 
-// exports.loginForm = (req, res) => {
-//   res.render('login', {title: 'Login'});
-// };
-//
-// exports.registerForm = (req, res) => {
-//   res.render('register', {title: 'Register'});
-// };
-//
+exports.updateUserSettings = async (req, res) => {
+  const user = await User.findOneAndUpdate(
+    { _id: req.body.userId },
+    { $set: { settings: req.body.settings } },
+    { new: true, runValidators: true, context: 'query' }
+  );
+  res.status(200).json(user);
+}
+
 exports.validateRegister = (req, res, next) => {
   req.sanitizeBody('firstName');
   req.checkBody('firstName', 'You must supply a first name!').notEmpty();

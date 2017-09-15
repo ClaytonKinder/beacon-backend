@@ -31,6 +31,28 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
+  settings: {
+    playSound: {
+      required: true,
+      type: Boolean,
+      default: false
+    },
+    unitOfMeasurement: {
+      required: true,
+      type: String,
+      default: 'miles'
+    },
+    searchRadius: {
+      required: true,
+      type: Number,
+      default: 15
+    },
+    defaultColor: {
+      required: true,
+      type: String,
+      default: '#FF0000'
+    }
+  },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
 });
