@@ -13,11 +13,11 @@ exports.authenticate = (req, res) => {
   }, function(err, user) {
     if (err) throw err;
     if (!user) {
-      res.json({ success: false, message: 'Authentication failed. User not found.' });
+      res.status(400).json({ success: false, message: 'Authentication failed. User not found.' });
     } else if (user) {
       user.comparePassword(req.body.password, function(err, isMatch) {
-        if (err) {
-          res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+        if (err || !isMatch) {
+          res.status(400).json({ success: false, message: 'Authentication failed. Wrong password.' });
         } else {
           let tokenData = {
             email: user.email,
@@ -26,9 +26,8 @@ exports.authenticate = (req, res) => {
           var token = jwt.sign(tokenData, process.env.SECRET);
 
           // return the information including token as JSON
-          res.json({
+          res.status(200).json({
             success: true,
-            message: 'Enjoy your token!',
             token: token
           });
         }

@@ -12,6 +12,11 @@ router.post('/user/getuser/:email', authController.hasToken, catchErrors(userCon
 router.post('/user/getusers', authController.hasToken, catchErrors(userController.getUsers));
 router.post('/auth/authenticate', authController.authenticate);
 router.post('/auth/isauth', authController.isAuth);
+router.post('/auth/register',
+  userController.validateRegister,
+  catchErrors(userController.register),
+  authController.authenticate
+);
 
 // router.get('/', catchErrors(storeController.getStores));
 // router.get('/stores', catchErrors(storeController.getStores));
@@ -46,11 +51,6 @@ router.post('/auth/isauth', authController.isAuth);
 // // 1. Validate the registration data
 // // 2. Register the user
 // // 3. We need to log them in
-// router.post('/register',
-//   userController.validateRegister,
-//   userController.register,
-//   authController.login
-// );
 //
 // router.get('/logout', authController.logout);
 //
