@@ -13,8 +13,8 @@ mongoose.connection.on('error', (err) => {
 // READY?! Let's go!
 
 // Import all of our models
-// require('./models/Store');
-const User = require('./models/User');
+require('./models/Beacon');
+require('./models/User');
 // require('./models/Review');
 
 

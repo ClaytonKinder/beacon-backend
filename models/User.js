@@ -29,9 +29,17 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    required: true
+    required: true,
+    select: false
   },
   settings: {
+    beaconLimit: {
+      required: true,
+      type: Number,
+      default: 60,
+      min: 1,
+      max: 100
+    },
     playSound: {
       required: true,
       type: Boolean,
@@ -45,7 +53,9 @@ const userSchema = new Schema({
     searchRadius: {
       required: true,
       type: Number,
-      default: 15
+      default: 15,
+      min: 1,
+      max: 30
     },
     defaultColor: {
       required: true,
@@ -55,7 +65,32 @@ const userSchema = new Schema({
   },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
+}, {
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true },
+  minimize: false
 });
+
+// userSchema.virtual('beacon', {
+//   ref: 'Beacon', // What model to link?
+//   localField: '_id', // Which field on the user?
+//   foreignField: 'author' // Which field on the beacon?
+// });
+
+userSchema.virtual('beacon', {
+  ref: 'Beacon', // What model to link?
+  localField: '_id', // Which field on the user?
+  foreignField: 'author', // Which field on the beacon?
+  justOne: true
+});
+
+function autopopulate(next) {
+  this.populate('beacon');
+  next();
+}
+
+userSchema.pre('find', autopopulate);
+userSchema.pre('findOne', autopopulate);
 
 userSchema.pre('save', function(next) {
     var user = this;
@@ -86,10 +121,10 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
 };
 
 // Use proper function instead of arrow function here so that this can be used to refer to the schema
-userSchema.virtual('gravatar').get(function() {
-  const hash = md5(this.email);
-  return `https://gravatar.com/avatar/${hash}?s=200`;
-});
+// userSchema.virtual('gravatar').get(function() {
+//   const hash = md5(this.email);
+//   return `https://gravatar.com/avatar/${hash}?s=200`;
+// });
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
 userSchema.plugin(mongodbErrorHandler);

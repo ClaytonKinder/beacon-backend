@@ -17,6 +17,12 @@ exports.staticMap = ([lng, lat]) => `https://maps.googleapis.com/maps/api/static
 // inserting an SVG
 exports.icon = (name) => fs.readFileSync(`./public/images/icons/${name}.svg`);
 
+exports.checkMinMax = (n, min, max) => {
+  if (n >= min && n <= max) return n;
+  if (n < min) return min;
+  if (n > max) return max;
+}
+
 // Some details about the site
 exports.siteName = `Now That's Delicious!`;
 

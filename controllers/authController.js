@@ -87,10 +87,11 @@ exports.isAuth = (req, res) => {
         // if everything is good, save to request for use in other routes
         User.findOne({
           _id: decoded._id
-        }, function(err, user) {
+        }).populate('beacon').exec(function(err, user) {
+          user.beacon = user.beacon;
           if (err) throw err;
           if (!user) {
-            res.json({ success: false, message: 'Authentication failed. User not found.' });
+            res.status(400).json({ success: false, message: 'Authentication failed. User not found.' });
           } else if (user) {
             res.status(200).send(user)
           }

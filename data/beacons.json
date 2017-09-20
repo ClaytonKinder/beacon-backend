@@ -1,0 +1,72 @@
+[
+  {
+    "_id":"59c199e0bb52a7639af41595",
+    "name": "Beacon of Solaire Astora",
+    "description": "This is the beacon of Solaire Astora",
+    "author": "59c191aaf58284645a67ecd0",
+    "color":"#FF0000",
+    "location":{
+      "type":"Point",
+      "coordinates":[
+        -80.0367259,
+        32.9221152
+      ]
+    }
+  },
+  {
+    "_id":"59c19ad1bb52a7639af41597",
+    "name": "Beacon of Blackiron Tarkus",
+    "description": "This is the beacon of Blackiron Tarkus",
+    "author": "59c1948194fd361ccc03e672",
+    "color":"#1717E8",
+    "location":{
+      "type":"Point",
+      "coordinates":[
+        -80.0367257,
+        32.9201152
+      ]
+    }
+  },
+  {
+    "_id":"59c19b2c4177e26d6ef94d1c",
+    "name": "Beacon of Siegmeyer Catarina",
+    "description": "This is the beacon of Siegmeyer Catarina",
+    "author": "59c194e994fd361ccc03e673",
+    "color":"#2FF20D",
+    "location":{
+      "type":"Point",
+      "coordinates":[
+        -80.0367261,
+        32.9241154
+      ]
+    }
+  },
+  {
+    "_id":"59c19b97737b1b6cae0ca0de",
+    "name": "Beacon of Lautrec Carim",
+    "description": "This is the beacon of Lautrec Carim",
+    "author": "59c193022c4d8546eea9cbde",
+    "color":"#F00FCE",
+    "location":{
+      "type":"Point",
+      "coordinates":[
+        -80.0347261,
+        32.9221150
+      ]
+    }
+  },
+  {
+    "_id":"59c19bd24fe1dc5b8a041c90",
+    "name": "Beacon of Trusty Patches",
+    "description": "This is the beacon of Trusty Patches",
+    "author": "59c1954194fd361ccc03e675",
+    "color":"#F8FE01",
+    "location":{
+      "type":"Point",
+      "coordinates":[
+        -80.0387257,
+        32.9221154
+      ]
+    }
+  }
+]

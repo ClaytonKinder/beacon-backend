@@ -4,7 +4,6 @@ const promisify = require('es6-promisify');
 const { noDataFound } = require('../handlers/errorHandlers');
 
 exports.getUserByEmail = async (req, res) => {
-  console.log(req.params.email);
   const user = await User.findOne({ email: req.params.email });
   if (!user) {
     noDataFound(res, 'users');
@@ -56,7 +55,7 @@ exports.validateRegister = (req, res, next) => {
 exports.register = async (req, res, next) => {
   const user = new User({
     firstName: req.body.firstName,
-    lastName: req.body.firstName,
+    lastName: req.body.lastName,
     email: req.body.email,
     password: req.body.password
   });

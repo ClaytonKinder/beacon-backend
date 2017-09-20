@@ -1,17 +1,18 @@
 const express = require('express');
 const router = express.Router();
-// const storeController = require('../controllers/storeController');
+const beaconController = require('../controllers/beaconController');
 const userController = require('../controllers/userController');
 // const reviewController = require('../controllers/reviewController');
 const authController = require('../controllers/authController');
 const { catchErrors } = require('../handlers/errorHandlers');
 //
-// // Do work here
 
+// User
 router.post('/user/getuser/:email', authController.hasToken, catchErrors(userController.getUserByEmail));
 router.post('/user/getusers', authController.hasToken, catchErrors(userController.getUsers));
 router.post('/user/updateusersettings', authController.hasToken, catchErrors(userController.updateUserSettings));
 
+// Auth
 router.post('/auth/authenticate', authController.authenticate);
 router.post('/auth/isauth', authController.isAuth);
 router.post('/auth/register',
@@ -19,6 +20,11 @@ router.post('/auth/register',
   catchErrors(userController.register),
   authController.authenticate
 );
+
+// Beacon
+router.post('/beacon/lightbeacon', catchErrors(beaconController.lightBeacon));
+router.post('/beacon/extinguishbeacon/:userId', catchErrors(beaconController.extinguishBeacon));
+router.post('/beacon/getnearbybeacons', catchErrors(beaconController.mapBeacons));
 
 // router.get('/', catchErrors(storeController.getStores));
 // router.get('/stores', catchErrors(storeController.getStores));
