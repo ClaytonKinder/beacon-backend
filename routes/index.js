@@ -8,13 +8,17 @@ const { catchErrors } = require('../handlers/errorHandlers');
 //
 
 // User
-router.post('/user/getuser/:email', authController.hasToken, catchErrors(userController.getUserByEmail));
-router.post('/user/getusers', authController.hasToken, catchErrors(userController.getUsers));
+// router.post('/user/getuser/:email', authController.hasToken, catchErrors(userController.getUserByEmail));
+// router.post('/user/getusers', authController.hasToken, catchErrors(userController.getUsers));
 router.post('/user/updateusersettings', authController.hasToken, catchErrors(userController.updateUserSettings));
+router.post('/user/updateuserinformation', authController.hasToken, catchErrors(userController.updateUserInformation));
+router.post('/user/updateuseremail', authController.hasToken, catchErrors(userController.updateUserEmail));
+router.post('/user/updateuserpassword', authController.hasToken, userController.validatePasswordUpdate, catchErrors(userController.updateUserPassword));
 
 // Auth
 router.post('/auth/authenticate', authController.authenticate);
 router.post('/auth/isauth', authController.isAuth);
+router.post('/auth/checkifemailisunique/:email', catchErrors(authController.checkIfEmailIsUnique));
 router.post('/auth/register',
   userController.validateRegister,
   catchErrors(userController.register),

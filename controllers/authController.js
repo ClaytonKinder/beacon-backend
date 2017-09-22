@@ -9,14 +9,16 @@ const jwt = require('jsonwebtoken');
 exports.authenticate = (req, res) => {
   // find the user
   User.findOne({
-    email: req.body.email
+    email : { $regex : new RegExp(req.body.email, 'i') }
   }, function(err, user) {
     if (err) throw err;
     if (!user) {
       res.status(400).json({ success: false, message: 'Authentication failed. User not found.' });
     } else if (user) {
       user.comparePassword(req.body.password, function(err, isMatch) {
-        if (err || !isMatch) {
+        if (err) {
+          res.status(400).json({ success: false, message: 'Oops! Something went wrong during the registration process' });
+        } else if (!isMatch) {
           res.status(400).json({ success: false, message: 'Authentication failed. Wrong password.' });
         } else {
           let tokenData = {
@@ -33,16 +35,9 @@ exports.authenticate = (req, res) => {
         }
       });
     }
-  })
+  });
 }
 
-//
-// exports.logout = (req, res) => {
-//   req.logout();
-//   req.flash('success', 'You are now logged out!');
-//   res.redirect('/');
-// }
-//
 exports.hasToken = (req, res, next) => {
   // check header or url parameters or post parameters for token
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -87,8 +82,7 @@ exports.isAuth = (req, res) => {
         // if everything is good, save to request for use in other routes
         User.findOne({
           _id: decoded._id
-        }).populate('beacon').exec(function(err, user) {
-          user.beacon = user.beacon;
+        }).populate('beacon').select('-password').exec(function(err, user) {
           if (err) throw err;
           if (!user) {
             res.status(400).json({ success: false, message: 'Authentication failed. User not found.' });
@@ -109,6 +103,16 @@ exports.isAuth = (req, res) => {
     });
 
   }
+}
+
+exports.checkIfEmailIsUnique = async (req, res) => {
+  if (!req.params.email) {
+    res.status(400).json({ success: false, message: 'Please provide a valid email address' })
+  }
+  const user = await User.findOne({
+    email : { $regex : new RegExp(req.params.email, 'i') }
+  });
+  res.status(200).send((user === null));
 }
 //
 // exports.forgot = async (req, res) => {

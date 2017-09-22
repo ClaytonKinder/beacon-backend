@@ -23,6 +23,18 @@ exports.checkMinMax = (n, min, max) => {
   if (n > max) return max;
 }
 
+exports.getAgeFromDateOfBirth = (dateOfBirth) => {
+  console.log(dateOfBirth, typeof dateOfBirth);
+  var today = new Date();
+  var age = today.getFullYear() - dateOfBirth.getFullYear();
+  var m = today.getMonth() - dateOfBirth.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < dateOfBirth.getDate()))
+  {
+      age--;
+  }
+  return age;
+}
+
 // Some details about the site
 exports.siteName = `Now That's Delicious!`;
 

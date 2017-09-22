@@ -12,9 +12,8 @@ const userSchema = new Schema({
   email: {
     type: String,
     unique: true,
-    lowercase: true,
     trim: true,
-    validate: [validator.isEmail, 'Invalid Email Address'],
+    validate: [validator.isEmail, 'Invalid email address'],
     required: 'Please supply an email address'
   },
   firstName: {
@@ -29,8 +28,19 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    required: true,
-    select: false
+    required: true
+  },
+  gender: {
+    type: String,
+    default: null
+  },
+  dateOfBirth: {
+    type: Date,
+    default: null
+  },
+  age: {
+    type: Number,
+    default: 0
   },
   settings: {
     beaconLimit: {
@@ -71,12 +81,6 @@ const userSchema = new Schema({
   minimize: false
 });
 
-// userSchema.virtual('beacon', {
-//   ref: 'Beacon', // What model to link?
-//   localField: '_id', // Which field on the user?
-//   foreignField: 'author' // Which field on the beacon?
-// });
-
 userSchema.virtual('beacon', {
   ref: 'Beacon', // What model to link?
   localField: '_id', // Which field on the user?
@@ -91,10 +95,9 @@ function autopopulate(next) {
 
 userSchema.pre('find', autopopulate);
 userSchema.pre('findOne', autopopulate);
-
 userSchema.pre('save', function(next) {
     var user = this;
-
+    console.log('Pre save!');
     // only hash the password if it has been modified (or is new)
     if (!user.isModified('password')) return next();
 
@@ -120,11 +123,11 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
     });
 };
 
-// Use proper function instead of arrow function here so that this can be used to refer to the schema
-// userSchema.virtual('gravatar').get(function() {
-//   const hash = md5(this.email);
-//   return `https://gravatar.com/avatar/${hash}?s=200`;
-// });
+//Use proper function instead of arrow function here so that this can be used to refer to the schema
+userSchema.virtual('gravatar').get(function() {
+  const hash = md5(this.email.toLowerCase());
+  return `https://gravatar.com/avatar/${hash}?s=200`;
+});
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
 userSchema.plugin(mongodbErrorHandler);

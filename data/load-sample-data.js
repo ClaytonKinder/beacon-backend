@@ -20,7 +20,7 @@ async function deleteData() {
   // await Store.remove();
   await Beacon.remove();
   await User.remove();
-  console.log('Data Deleted. To load sample data, run\n\n\t npm run sample\n\n');
+  console.log('Data deleted. To load sample data, run\n\n\t npm run sample\n\n');
   process.exit();
 }
 
@@ -32,7 +32,7 @@ async function loadData() {
     console.log('Loaded sample data!');
     process.exit();
   } catch(e) {
-    console.log('\nError! The Error info is below but if you are importing sample data make sure to drop the existing database first with.\n\n\t npm run blowitallaway\n\n\n');
+    console.log('\nError! The Error info is below but if you are importing sample data make sure to drop the existing database first with.\n\n\t npm run sample-delete\n\n\n');
     console.log(e);
     process.exit();
   }
