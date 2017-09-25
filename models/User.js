@@ -6,6 +6,7 @@ const validator = require('validator');
 const mongodbErrorHandler = require('mongoose-mongodb-errors');
 const passportLocalMongoose = require('passport-local-mongoose');
 const bcrypt = require('bcrypt');
+const { getAgeFromDateOfBirth } = require('../helpers');
 const SALT_WORK_FACTOR = 10;
 
 const userSchema = new Schema({
@@ -13,34 +14,42 @@ const userSchema = new Schema({
     type: String,
     unique: true,
     trim: true,
+    maxLength: 100,
     validate: [validator.isEmail, 'Invalid email address'],
     required: 'Please supply an email address'
   },
   firstName: {
     type: String,
     required: 'Please supply a name',
-    trim: true
+    trim: true,
+    maxLength: 50
   },
   lastName: {
     type: String,
     required: 'Please supply a name',
-    trim: true
+    trim: true,
+    maxLength: 50
   },
   password: {
     type: String,
-    required: true
+    required: true,
+    minLength: 8,
+    maxLength: 50
   },
   gender: {
     type: String,
-    default: null
+    default: null,
+    enum: ['male', 'female', null]
   },
   dateOfBirth: {
     type: Date,
-    default: null
-  },
-  age: {
-    type: Number,
-    default: 0
+    required: true,
+    validate: function (value) {
+      let date = new Date(value)
+      let now = new Date()
+      now.setHours(0, 0, 0, 0)
+      return (date < now)
+    }
   },
   settings: {
     beaconLimit: {
@@ -58,7 +67,8 @@ const userSchema = new Schema({
     unitOfMeasurement: {
       required: true,
       type: String,
-      default: 'miles'
+      default: 'miles',
+      enum: ['miles', 'kilometers']
     },
     searchRadius: {
       required: true,
@@ -88,6 +98,10 @@ userSchema.virtual('beacon', {
   justOne: true
 });
 
+userSchema.virtual('age').get(function () {
+  return getAgeFromDateOfBirth(new Date(this.dateOfBirth));
+});
+
 function autopopulate(next) {
   this.populate('beacon');
   next();
@@ -97,7 +111,6 @@ userSchema.pre('find', autopopulate);
 userSchema.pre('findOne', autopopulate);
 userSchema.pre('save', function(next) {
     var user = this;
-    console.log('Pre save!');
     // only hash the password if it has been modified (or is new)
     if (!user.isModified('password')) return next();
 
@@ -126,7 +139,7 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
 //Use proper function instead of arrow function here so that this can be used to refer to the schema
 userSchema.virtual('gravatar').get(function() {
   const hash = md5(this.email.toLowerCase());
-  return `https://gravatar.com/avatar/${hash}?s=200`;
+  return `https://gravatar.com/avatar/${hash}?s=200&d=mm`;
 });
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });

@@ -47,20 +47,32 @@ exports.extinguishBeacon = async (req, res) => {
   });
 };
 
+function filterBeacons (beacons, user) {
+  let filtered = beacons.filter((beacon) => {
+    let keepBeacon = true;
+    let filterArray = [
+      (user.age < beacon.additionalSettings.ageRange.min),
+      (user.age > beacon.additionalSettings.ageRange.max),
+      (beacon.additionalSettings.genderRestriction === 'maleOnly' && user.gender !== 'male'),
+      (beacon.additionalSettings.genderRestriction === 'femaleOnly' && user.gender !== 'female')
+    ];
+    filterArray.map((filter) => {
+      if (filter) {
+        keepBeacon = false
+      }
+    })
+    return keepBeacon;
+  })
+  return filtered;
+}
+
 exports.mapBeacons = async (req, res) => {
   const coordinates = [req.body.lng, req.body.lat].map(parseFloat);
   const unit = req.body.unitOfMeasurement || 'miles';
   const radius = checkMinMax(req.body.searchRadius, 1, 30) || 15;
   const limit = checkMinMax(req.body.beaconLimit, 1, 100) || 50;
-  let max;
-  // Convert miles to meters
-  if (unit === 'miles') {
-    max = radius * 1609.344;
-  } else {
-  // Convert meters to kilometers
-    max = radius * 1000;
-  }
-  const q = {
+  let max = (unit === 'miles') ? radius * 1609.344 : radius * 1000;
+  let q = {
     location: {
       $near: {
         $geometry: {
@@ -71,7 +83,15 @@ exports.mapBeacons = async (req, res) => {
       }
     }
   }
-
-  const beacons = await Beacon.find(q).populate('author').limit(limit);
-  res.status(200).json(beacons);
+  Beacon.find(q).populate('author').exec((err, beacons) => {
+    beacons = filterBeacons(beacons, req.body.user).slice(0, limit - 1);
+    if (req.body.user.beacon) {
+      Beacon.findOne({ author: req.body.user._id }).populate('author').exec((err, userBeacon) => {
+        beacons.unshift(userBeacon);
+        res.status(200).json(beacons);
+      });
+    } else {
+      res.status(200).json(beacons);
+    }
+  });
 };

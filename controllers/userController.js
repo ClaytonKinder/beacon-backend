@@ -31,6 +31,7 @@ exports.validateRegister = (req, res, next) => {
   req.checkBody('password', 'Password cannot be blank!').notEmpty();
   req.checkBody('passwordConfirmation', 'Confirmed password cannot be blank!').notEmpty();
   req.checkBody('passwordConfirmation', 'Oops! Your passwords do not match').equals(req.body.password);
+  req.checkBody('dateOfBirth', 'Date of birth cannot be blank!').notEmpty();
 
   const errors = req.validationErrors();
   if (errors) {
@@ -45,6 +46,7 @@ exports.register = async (req, res, next) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
+    dateOfBirth: req.body.dateOfBirth,
     password: req.body.password
   });
   const register = promisify(User.register, User);
@@ -84,7 +86,6 @@ exports.updateUserInformation = async (req, res) => {
 }
 
 exports.updateUserEmail = async (req, res) => {
-  console.log(req.body);
   const user = await User.findOneAndUpdate(
     { _id: req.body.userId },
     {
@@ -94,7 +95,6 @@ exports.updateUserEmail = async (req, res) => {
     },
     { new: true, runValidators: true, context: 'query' }
   );
-  console.log(user);
   if (!user) {
     res.status(404).json({success: false, message: 'Could not update user email at this time'});
   } else {

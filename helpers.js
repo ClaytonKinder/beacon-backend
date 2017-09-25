@@ -24,7 +24,6 @@ exports.checkMinMax = (n, min, max) => {
 }
 
 exports.getAgeFromDateOfBirth = (dateOfBirth) => {
-  console.log(dateOfBirth, typeof dateOfBirth);
   var today = new Date();
   var age = today.getFullYear() - dateOfBirth.getFullYear();
   var m = today.getMonth() - dateOfBirth.getMonth();

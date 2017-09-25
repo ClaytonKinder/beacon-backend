@@ -1,16 +1,25 @@
 [
   {
     "_id":"59c199e0bb52a7639af41595",
-    "name": "Beacon of Solaire Astora",
-    "description": "This is the beacon of Solaire Astora",
+    "name": "Need praisers of the sun!",
+    "description": "Looking for people to bask in the light of our glorious sun. Ahh, what gross incandescence.",
     "author": "59c191aaf58284645a67ecd0",
-    "color":"#FF0000",
+    "color":"#FFFFFF",
     "location":{
       "type":"Point",
       "coordinates":[
         -80.0407259,
         32.9181152
       ]
+    },
+    "additionalSettings": {
+      "genderRestriction": null,
+      "ageRange": {
+        "min": 22,
+        "max": 40
+      },
+      "password": null,
+      "tags": ["Sunlight", "Praise it!"]
     }
   },
   {
@@ -25,12 +34,21 @@
         -80.0367257,
         32.9201152
       ]
+    },
+    "additionalSettings": {
+      "genderRestriction": "maleOnly",
+      "ageRange": {
+        "min": 40,
+        "max": 60
+      },
+      "password": null,
+      "tags": ["Poise", "Heavy", "Armored", "Tanky", "Big sword"]
     }
   },
   {
     "_id":"59c19b2c4177e26d6ef94d1c",
-    "name": "Beacon of Siegmeyer Catarina",
-    "description": "This is the beacon of Siegmeyer Catarina",
+    "name": "Beacon of Siegmeyer of Catarina",
+    "description": "This is the beacon of Siegmeyer of Catarina",
     "author": "59c194e994fd361ccc03e673",
     "color":"#2FF20D",
     "location":{
@@ -39,12 +57,21 @@
         -80.0367261,
         32.9241154
       ]
+    },
+    "additionalSettings": {
+      "genderRestriction": "femaleOnly",
+      "ageRange": {
+        "min": 18,
+        "max": 100
+      },
+      "password": null,
+      "tags": ["Nap", "Toast", "Hmm..."]
     }
   },
   {
     "_id":"59c19b97737b1b6cae0ca0de",
-    "name": "Beacon of Lautrec Carim",
-    "description": "This is the beacon of Lautrec Carim",
+    "name": "Beacon of Lautrec of Carim",
+    "description": "This is the beacon of Lautrec of Carim",
     "author": "59c193022c4d8546eea9cbde",
     "color":"#F00FCE",
     "location":{
@@ -53,20 +80,38 @@
         -80.0347261,
         32.9221150
       ]
+    },
+    "additionalSettings": {
+      "genderRestriction": null,
+      "ageRange": {
+        "min": 30,
+        "max": 35
+      },
+      "password": "humanity",
+      "tags": ["Goddess"]
     }
   },
   {
     "_id":"59c19bd24fe1dc5b8a041c90",
-    "name": "Beacon of Trusty Patches",
-    "description": "This is the beacon of Trusty Patches",
+    "name": "Treasure hounds welcome!",
+    "description": "Looking for brave souls with a thirst for treasure, preferably treasure near steep ledges. No clerics allowed!",
     "author": "59c1954194fd361ccc03e675",
-    "color":"#F8FE01",
+    "color":"#000000",
     "location":{
       "type":"Point",
       "coordinates":[
         -80.0387257,
         32.9221154
       ]
+    },
+    "additionalSettings": {
+      "genderRestriction": null,
+      "ageRange": {
+        "min": 18,
+        "max": 100
+      },
+      "password": null,
+      "tags": ["Ledges", "Kicking", "Treasure", "Trustworthy", "No clerics"]
     }
   }
 ]

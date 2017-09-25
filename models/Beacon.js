@@ -1,62 +1,24 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-// const slug = require('slugs');
-
-// const beaconSchema = new mongoose.Schema({
-//   name: {
-//     type: String,
-//     trim: true,
-//     required: 'Please enter a name for your beacon'
-//   },
-//   description: {
-//     type: String,
-//     trim: true
-//   },
-//   tags: [String],
-//   created: {
-//     type: Date,
-//     default: Date.now
-//   },
-//   location: {
-//     type: {
-//       type: String,
-//       default: 'Point'
-//     },
-//     coordinates: [{
-//       type: Number,
-//       required: 'Please supply coordinates for your beacon'
-//     }],
-//     address: {
-//       type: String,
-//       required: 'You must supply an address!'
-//     }
-//   },
-//   photo: String,
-//   author: {
-//     type: mongoose.Schema.ObjectId,
-//     ref: 'User',
-//     required: 'You must supply an author'
-//   }
-// }, {
-//   toJSON: { virtuals: true },
-//   toObject: { virtuals: true },
-// });
 
 const beaconSchema = new mongoose.Schema({
   name: {
     type: String,
     trim: true,
+    maxLength: 100,
     required: 'Please supply a name for your beacon'
   },
   description: {
     type: String,
     trim: true,
+    maxLength: 140,
     required: 'Please supply a description for your beacon'
   },
   color: {
     type: String,
     trim: true,
     default: '#FF0000',
+    maxLength: 7,
     required: 'Please supply a color for your beacon'
   },
   created: {
@@ -79,6 +41,35 @@ const beaconSchema = new mongoose.Schema({
       required: 'Please supply coordinates for your beacon'
     }]
     // Longitude first, then latitude
+  },
+  additionalSettings: {
+    genderRestriction: {
+      type: String,
+      default: null
+    },
+    ageRange: {
+      min: {
+        type: Number,
+        min: 18,
+        max: 100,
+        default: 18
+      },
+      max: {
+        type: Number,
+        min: 18,
+        max: 100,
+        default: 100
+      }
+    },
+    password: {
+      type: String,
+      minLength: 8,
+      maxLength: 50
+    },
+    tags: {
+      type: [String],
+      maxLength: 5
+    }
   }
 }, {
   toJSON: { virtuals: true },
@@ -91,7 +82,7 @@ beaconSchema.index({
   description: 'text'
 });
 
-// beaconSchema.index({ location: '2dsphere' });
+beaconSchema.index({ location: '2dsphere' });
 
 
 // function autopopulate(next) {
