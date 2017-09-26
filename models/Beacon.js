@@ -42,6 +42,19 @@ const beaconSchema = new mongoose.Schema({
     }]
     // Longitude first, then latitude
   },
+  isHosting: {
+    type: Boolean,
+    default: true
+  },
+  hostBeacon: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Beacon',
+    required: function () {
+      // hostBeacon is only required if this beacon is not currently hosting
+      // (meaning it's connected to another beacon)
+      return (this.isHosting == false)
+    }
+  },
   additionalSettings: {
     genderRestriction: {
       type: String,

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const beaconController = require('../controllers/beaconController');
 const userController = require('../controllers/userController');
+const connectionController = require('../controllers/connectionController');
 // const reviewController = require('../controllers/reviewController');
 const authController = require('../controllers/authController');
 const { catchErrors } = require('../handlers/errorHandlers');
@@ -25,11 +26,32 @@ router.post('/auth/register',
   authController.authenticate
 );
 
-// Beacon
-router.post('/beacon/lightbeacon', catchErrors(beaconController.lightBeacon));
-router.post('/beacon/extinguishbeacon/:userId', catchErrors(beaconController.extinguishBeacon));
-router.post('/beacon/getnearbybeacons', catchErrors(beaconController.mapBeacons));
+// location
+router.post('/location/getbeacondistance', authController.hasToken, beaconController.getBeaconDistance)
 
+// Beacon
+router.post('/beacon/lightbeacon', authController.hasToken, catchErrors(beaconController.lightBeacon));
+router.post('/beacon/extinguishbeacon/:userId', authController.hasToken, catchErrors(beaconController.extinguishBeacon));
+router.post('/beacon/getnearbybeacons', authController.hasToken, catchErrors(beaconController.mapBeacons));
+
+// Connections
+router.post('/connection/createconnectionrequest',
+  authController.hasToken,
+  authController.verifyUserId,
+  beaconController.verifyUserHasNoBeacon,
+  beaconController.checkBeaconDistance,
+  catchErrors(connectionController.createConnectionRequest)
+);
+router.post('/connection/severconnectionstobeacon',
+  authController.hasToken,
+  // authController.verifyBeaconOwnerId,
+  catchErrors(connectionController.severConnectionsToBeacon)
+);
+router.post('/connection/cancelconnectionrequest',
+  authController.hasToken,
+  authController.verifyUserId,
+  catchErrors(connectionController.cancelConnectionRequest)
+);
 // router.get('/', catchErrors(storeController.getStores));
 // router.get('/stores', catchErrors(storeController.getStores));
 // router.get('/stores/page/:page', catchErrors(storeController.getStores));

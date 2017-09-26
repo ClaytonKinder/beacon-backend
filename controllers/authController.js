@@ -68,6 +68,20 @@ exports.hasToken = (req, res, next) => {
   }
 }
 
+// Only used after hasToken as additional middleware
+exports.checkUserAgainstToken = (req, res, next) => {
+  let idFields = [req.body.userId, req.body._id];
+  if (!req.decoded) {
+    return res.status(401).json({ success: false, message: 'Failed to authenticate token.' });
+  } else {
+    if (!idFields.includes(req.decoded._id)) {
+      return res.status(401).json({ success: false, message: 'You are not allowed to affect the data of other users' });
+    } else {
+      next();
+    }
+  }
+}
+
 exports.isAuth = (req, res) => {
   // check header or url parameters or post parameters for token
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -113,6 +127,31 @@ exports.checkIfEmailIsUnique = async (req, res) => {
     email : { $regex : new RegExp(req.params.email, 'i') }
   });
   res.status(200).send((user === null));
+}
+
+// Token verification middleware
+exports.verifyBeaconOwnerId = (req, res, next) => {
+  if (!req.decoded) {
+    return res.status(401).json({ success: false, message: 'Failed to authenticate token.' });
+  } else {
+    if (req.decoded._id !== req.body.beaconOwnerId) {
+      return res.status(401).json({ success: false, message: 'You are not allowed to affect the data of other users' });
+    } else {
+      next();
+    }
+  }
+}
+
+exports.verifyUserId = (req, res, next) => {
+  if (!req.decoded) {
+    return res.status(401).json({ success: false, message: 'Failed to authenticate token.' });
+  } else {
+    if (req.decoded._id !== req.body.userId) {
+      return res.status(401).json({ success: false, message: 'You are not allowed to affect the data of other users' });
+    } else {
+      next();
+    }
+  }
 }
 //
 // exports.forgot = async (req, res) => {

@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const Beacon = mongoose.model('Beacon');
 const User = mongoose.model('User');
 const { checkMinMax } = require('../helpers');
+let distance = require('google-distance');
+distance.apiKey = process.env.DISTANCEMATRIX_API_KEY
 // const multer = require('multer');
 // const jimp = require('jimp');
 // const uuid = require('uuid');
@@ -95,3 +97,47 @@ exports.mapBeacons = async (req, res) => {
     }
   });
 };
+
+exports.checkBeaconDistance = (req, res, next) => {
+  distance.get({
+    origin: `${req.body.userLat},${req.body.userLng}`,
+    destination: `${req.body.beaconLat},${req.body.beaconLng}`
+  },
+  (err, data) => {
+    if (err) {
+      return res.status(404).json({ success: false, message: 'Unable to check beacon distance at this time' });
+    }
+    // Must be within a certain radius to connect
+    data.canConnect = !(data.distanceValue > Number(process.env.CONNECTION_DISTANCE));
+    if (!data.canConnect) {
+      return res.status(404).json({ success: false, message: 'You are not close enough to connect to this beacon' });
+    } else {
+      return next();
+    }
+  })
+}
+
+exports.getBeaconDistance = (req, res) => {
+  distance.get({
+    origin: `${req.body.userLat},${req.body.userLng}`,
+    destination: `${req.body.beaconLat},${req.body.beaconLng}`
+  },
+  (err, data) => {
+    if (err) {
+      res.status(404).json({ success: false, message: 'Unable to check beacon distance at this time' });
+      return;
+    }
+    // Must be within a certain radius to connect
+    data.canConnect = !(data.distanceValue > Number(process.env.CONNECTION_DISTANCE));
+    res.status(200).json(data);
+  })
+}
+
+exports.verifyUserHasNoBeacon = async (req, res, next) => {
+  const user = await User.findOne({ _id: req.body.userId })
+  if (user.beacon) {
+    res.status(404).send({success: false, message: 'You must extinguish your beacon before connecting to others'})
+  } else {
+    next();
+  }
+}

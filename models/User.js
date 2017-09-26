@@ -83,6 +83,69 @@ const userSchema = new Schema({
       default: '#FF0000'
     }
   },
+  connectionRequests: {
+    outgoing: {
+      userId: {
+        type: Schema.Types.ObjectId,
+        required: true
+      },
+      beaconId: {
+        type: Schema.Types.ObjectId,
+        required: true
+      },
+      beaconOwnerId: {
+        type: Schema.Types.ObjectId,
+        required: true
+      },
+      ownerName: {
+        type: String,
+        required: true
+      },
+      name: {
+        type: String,
+        required: true
+      },
+      gravatar: {
+        type: String,
+        required: true
+      },
+      created: {
+        type: Date
+      }
+    },
+    incoming: [{
+      userId: {
+        type: Schema.Types.ObjectId,
+        required: true
+      },
+      beaconId: {
+        type: Schema.Types.ObjectId,
+        required: true
+      },
+      beaconOwnerId: {
+        type: Schema.Types.ObjectId,
+        required: true
+      },
+      ownerName: {
+        type: String,
+        required: true
+      },
+      name: {
+        type: String,
+        required: true
+      },
+      gravatar: {
+        type: String,
+        required: true
+      },
+      created: {
+        type: Date
+      },
+      seen: {
+        type: Boolean
+      }
+    }]
+  },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
 }, {
@@ -98,12 +161,23 @@ userSchema.virtual('beacon', {
   justOne: true
 });
 
+userSchema.virtual('hostBeacon', {
+  ref: 'Beacon', // What model to link?
+  localField: '_id', // Which field on the user?
+  foreignField: 'author', // Which field on the beacon?
+  justOne: true
+});
+
 userSchema.virtual('age').get(function () {
   return getAgeFromDateOfBirth(new Date(this.dateOfBirth));
 });
 
 userSchema.virtual('fullName').get(function () {
-  return this.firstName + ' ' + this.lastname;
+  return this.firstName + ' ' + this.lastName;
+});
+
+userSchema.virtual('lowercaseEmail').get(function () {
+  return this.email.toLowerCase();
 });
 
 function autopopulate(next) {
