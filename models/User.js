@@ -102,6 +102,10 @@ userSchema.virtual('age').get(function () {
   return getAgeFromDateOfBirth(new Date(this.dateOfBirth));
 });
 
+userSchema.virtual('fullName').get(function () {
+  return this.firstName + ' ' + this.lastname;
+});
+
 function autopopulate(next) {
   this.populate('beacon');
   next();
