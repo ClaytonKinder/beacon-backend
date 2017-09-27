@@ -6,7 +6,7 @@ const validator = require('validator');
 const mongodbErrorHandler = require('mongoose-mongodb-errors');
 const passportLocalMongoose = require('passport-local-mongoose');
 const bcrypt = require('bcrypt');
-const { getAgeFromDateOfBirth } = require('../helpers');
+const { getAgeFromDateOfBirth, doesObjectExist } = require('../helpers');
 const SALT_WORK_FACTOR = 10;
 
 const userSchema = new Schema({
@@ -17,6 +17,13 @@ const userSchema = new Schema({
     maxLength: 100,
     validate: [validator.isEmail, 'Invalid email address'],
     required: 'Please supply an email address'
+  },
+  lowercaseEmail: {
+    type: String,
+    unique: true,
+    maxLength: 100,
+    required: true,
+    select: false
   },
   firstName: {
     type: String,
@@ -86,28 +93,22 @@ const userSchema = new Schema({
   connectionRequests: {
     outgoing: {
       userId: {
-        type: Schema.Types.ObjectId,
-        required: true
+        type: Schema.Types.ObjectId
       },
       beaconId: {
-        type: Schema.Types.ObjectId,
-        required: true
+        type: Schema.Types.ObjectId
       },
       beaconOwnerId: {
-        type: Schema.Types.ObjectId,
-        required: true
+        type: Schema.Types.ObjectId
       },
       ownerName: {
-        type: String,
-        required: true
+        type: String
       },
       name: {
-        type: String,
-        required: true
+        type: String
       },
       gravatar: {
-        type: String,
-        required: true
+        type: String
       },
       created: {
         type: Date
@@ -115,28 +116,22 @@ const userSchema = new Schema({
     },
     incoming: [{
       userId: {
-        type: Schema.Types.ObjectId,
-        required: true
+        type: Schema.Types.ObjectId
       },
       beaconId: {
-        type: Schema.Types.ObjectId,
-        required: true
+        type: Schema.Types.ObjectId
       },
       beaconOwnerId: {
-        type: Schema.Types.ObjectId,
-        required: true
+        type: Schema.Types.ObjectId
       },
       ownerName: {
-        type: String,
-        required: true
+        type: String
       },
       name: {
-        type: String,
-        required: true
+        type: String
       },
       gravatar: {
-        type: String,
-        required: true
+        type: String
       },
       created: {
         type: Date
@@ -174,10 +169,6 @@ userSchema.virtual('age').get(function () {
 
 userSchema.virtual('fullName').get(function () {
   return this.firstName + ' ' + this.lastName;
-});
-
-userSchema.virtual('lowercaseEmail').get(function () {
-  return this.email.toLowerCase();
 });
 
 function autopopulate(next) {

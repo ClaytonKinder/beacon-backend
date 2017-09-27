@@ -23,6 +23,16 @@ exports.checkMinMax = (n, min, max) => {
   if (n > max) return max;
 }
 
+exports.doesObjectExist = (obj) => {
+  if (!obj) return false
+  for (var prop in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+      return true
+    }
+  }
+  return false
+}
+
 exports.getAgeFromDateOfBirth = (dateOfBirth) => {
   var today = new Date();
   var age = today.getFullYear() - dateOfBirth.getFullYear();

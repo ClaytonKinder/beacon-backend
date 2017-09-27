@@ -46,6 +46,7 @@ exports.register = async (req, res, next) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
+    lowercaseEmail: req.body.email.toLowerCase(),
     dateOfBirth: req.body.dateOfBirth,
     password: req.body.password
   });
@@ -90,7 +91,8 @@ exports.updateUserEmail = async (req, res) => {
     { _id: req.body.userId },
     {
       $set: {
-        email: req.body.email
+        email: req.body.email,
+        lowercaseEmail: req.body.email.toLowerCase()
       }
     },
     { new: true, runValidators: true, context: 'query' }

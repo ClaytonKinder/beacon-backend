@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 exports.authenticate = (req, res) => {
   // find the user
   User.findOne({
-    email : { $regex : new RegExp(req.body.email, 'i') }
+    lowercaseEmail: req.body.email.toLowerCase()
   }, function(err, user) {
     if (err) throw err;
     if (!user) {
