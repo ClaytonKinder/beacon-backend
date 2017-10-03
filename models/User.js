@@ -135,9 +135,6 @@ const userSchema = new Schema({
       },
       created: {
         type: Date
-      },
-      seen: {
-        type: Boolean
       }
     }]
   },

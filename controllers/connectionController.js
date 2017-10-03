@@ -42,7 +42,6 @@ exports.createConnectionRequest = async (req, res) => {
           ownerName: req.body.ownerName,
           name: req.body.name,
           gravatar: req.body.gravatar,
-          seen: false,
           created: Date.now()
         }
       }
