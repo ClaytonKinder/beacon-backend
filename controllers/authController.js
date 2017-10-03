@@ -146,10 +146,10 @@ exports.verifyUserId = (req, res, next) => {
   if (!req.decoded) {
     return res.status(401).json({ success: false, message: 'Failed to authenticate token.' });
   } else {
-    if (req.decoded._id !== req.body.userId) {
-      return res.status(401).json({ success: false, message: 'You are not allowed to affect the data of other users' });
-    } else {
+    if (req.decoded._id === req.body.userId) {
       next();
+    } else {
+      return res.status(401).json({ success: false, message: 'You are not allowed to affect the data of other users' });
     }
   }
 }

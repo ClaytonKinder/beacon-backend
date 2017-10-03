@@ -23,6 +23,29 @@
     }
   },
   {
+    "_id":"59c19ad1bb52a7639af41597",
+    "name": "Beacon of Blackiron Tarkus",
+    "description": "This is the beacon of Blackiron Tarkus",
+    "author": "59c1948194fd361ccc03e672",
+    "color":"#1717E8",
+    "location":{
+      "type":"Point",
+      "coordinates":[
+        -80.0367257,
+        32.9201152
+      ]
+    },
+    "additionalSettings": {
+      "genderRestriction": "maleOnly",
+      "ageRange": {
+        "min": 40,
+        "max": 60
+      },
+      "password": null,
+      "tags": ["Poise", "Heavy", "Armored", "Tanky", "Big sword"]
+    }
+  },
+  {
     "_id":"59c19b2c4177e26d6ef94d1c",
     "name": "Beacon of Siegmeyer of Catarina",
     "description": "This is the beacon of Siegmeyer of Catarina",
@@ -69,16 +92,16 @@
     }
   },
   {
-    "_id":"59cb1a29c3368b2321466357",
-    "name": "Beacon of Clayton Kinder",
-    "description": "This is the beacon of Clayton Kinder and it should have two pending connection requests.",
-    "author": "59c4049b6ea92c74720f627a",
-    "color":"#FF0000",
+    "_id":"59c19bd24fe1dc5b8a041c90",
+    "name": "Treasure hounds welcome!",
+    "description": "Looking for brave souls with a thirst for treasure, preferably treasure near steep ledges. No clerics allowed!",
+    "author": "59c1954194fd361ccc03e675",
+    "color":"#000000",
     "location":{
       "type":"Point",
       "coordinates":[
-        -80.1149305,
-        32.928346999999995
+        -80.0387257,
+        32.9221154
       ]
     },
     "additionalSettings": {
@@ -88,7 +111,7 @@
         "max": 100
       },
       "password": null,
-      "tags": ["Connection test", "Please work"]
+      "tags": ["Ledges", "Kicking", "Treasure", "Trustworthy", "No clerics"]
     }
   }
 ]

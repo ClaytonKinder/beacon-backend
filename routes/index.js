@@ -31,7 +31,12 @@ router.post('/location/getbeacondistance', authController.hasToken, beaconContro
 
 // Beacon
 router.post('/beacon/lightbeacon', authController.hasToken, catchErrors(beaconController.lightBeacon));
-router.post('/beacon/extinguishbeacon/:userId', authController.hasToken, catchErrors(beaconController.extinguishBeacon));
+router.post('/beacon/extinguishbeacon',
+  authController.hasToken,
+  authController.verifyUserId,
+  catchErrors(connectionController.severAllConnectionRequestsToBeacon),
+  catchErrors(beaconController.extinguishBeacon)
+);
 router.post('/beacon/getnearbybeacons', authController.hasToken, catchErrors(beaconController.mapBeacons));
 
 // Connections

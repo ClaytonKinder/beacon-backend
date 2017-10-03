@@ -32,19 +32,18 @@ distance.apiKey = process.env.DISTANCEMATRIX_API_KEY
 
 exports.lightBeacon = async (req, res) => {
   const beacon = await(new Beacon(req.body)).save();
-  res.status(200).json(beacon)
+  const user = await User.findOne({_id: req.body.author});
+  res.status(200).json(user)
 };
 
 exports.extinguishBeacon = async (req, res) => {
-  if (!req.params.userId) {
-    res.status(400).json({ success: false, message: 'A user ID must be provided' });
-  }
-  Beacon.remove({ author: req.params.userId }, function(err) {
+  const user = await User.findOne({ _id: req.body.userId });
+  Beacon.remove({ author: req.body.userId }, function(err) {
     if (err) {
       res.status(404).json({ success: false, message: 'Unable to extinguish beacon at this time' });
     }
     else {
-      res.status(200).json({ success: true, message: 'Beacon successfully extinguished' });
+      res.status(200).json(user);
     }
   });
 };

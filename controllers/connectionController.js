@@ -3,7 +3,7 @@ const Beacon = mongoose.model('Beacon');
 const User = mongoose.model('User');
 const { checkMinMax } = require('../helpers');
 
-exports.severConnectionsToBeacon = async (req, res) => {
+exports.severAllConnectionRequestsToBeacon = async (req, res, next) => {
   // Find all users with outgoing requests to the severed beacon to remove them
   const removeOutgoingPromise = User.update(
     { 'connectionRequests.outgoing.beaconId': req.body.beaconId },
@@ -17,7 +17,7 @@ exports.severConnectionsToBeacon = async (req, res) => {
   )
   // Find owner of severed beacon and remove incoming requests
   const removeIncomingPromise = User.update(
-    { _id: req.body.beaconOwnerId },
+    { _id: req.body.userId },
     {
       $set: {
         'connectionRequests.incoming': []
@@ -27,7 +27,7 @@ exports.severConnectionsToBeacon = async (req, res) => {
     }
   )
   await Promise.all([removeOutgoingPromise, removeIncomingPromise]);
-  res.status(200).json({ success: true, message: 'All connections to this beacon have been severed' });
+  next()
 }
 
 exports.createConnectionRequest = async (req, res) => {
