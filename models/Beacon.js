@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 
 const beaconSchema = new mongoose.Schema({
@@ -42,19 +43,52 @@ const beaconSchema = new mongoose.Schema({
     }]
     // Longitude first, then latitude
   },
-  isHosting: {
-    type: Boolean,
-    default: true
-  },
-  hostBeacon: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Beacon',
-    required: function () {
-      // hostBeacon is only required if this beacon is not currently hosting
-      // (meaning it's connected to another beacon)
-      return (this.isHosting == false)
+  connections: [{
+    userId: {
+      type: Schema.Types.ObjectId
+    },
+    beaconId: {
+      type: Schema.Types.ObjectId
+    },
+    beaconOwnerId: {
+      type: Schema.Types.ObjectId
+    },
+    ownerName: {
+      type: String
+    },
+    name: {
+      type: String
+    },
+    gravatar: {
+      type: String
+    },
+    created: {
+      type: Date
     }
-  },
+  }],
+  incomingConnectionRequests: [{
+    userId: {
+      type: Schema.Types.ObjectId
+    },
+    beaconId: {
+      type: Schema.Types.ObjectId
+    },
+    beaconOwnerId: {
+      type: Schema.Types.ObjectId
+    },
+    ownerName: {
+      type: String
+    },
+    name: {
+      type: String
+    },
+    gravatar: {
+      type: String
+    },
+    created: {
+      type: Date
+    }
+  }],
   additionalSettings: {
     genderRestriction: {
       type: String,

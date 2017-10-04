@@ -6,21 +6,10 @@ const { checkMinMax } = require('../helpers');
 exports.severAllConnectionRequestsToBeacon = async (req, res, next) => {
   // Find all users with outgoing requests to the severed beacon to remove them
   const removeOutgoingPromise = User.update(
-    { 'connectionRequests.outgoing.beaconId': req.body.beaconId },
+    { 'outgoingConnectionRequest.beaconId': req.body.beaconId },
     {
       $unset: {
-        'connectionRequests.outgoing': ''
-      }
-    }, {
-      new: true
-    }
-  )
-  // Find owner of severed beacon and remove incoming requests
-  const removeIncomingPromise = User.update(
-    { _id: req.body.userId },
-    {
-      $set: {
-        'connectionRequests.incoming': []
+        'outgoingConnectionRequest': ''
       }
     }, {
       new: true
@@ -31,11 +20,12 @@ exports.severAllConnectionRequestsToBeacon = async (req, res, next) => {
 }
 
 exports.createConnectionRequest = async (req, res) => {
-  const beaconOwnerPromise = User.findOneAndUpdate(
-    { _id: req.body.beaconOwnerId },
+  // Find owner of severed beacon and add incoming request
+  const beaconOwnerPromise = Beacon.findOneAndUpdate(
+    { _id: req.body.beaconId },
     {
       $push: {
-        'connectionRequests.incoming': {
+        'incomingConnectionRequests': {
           userId: req.body.userId,
           beaconId: req.body.beaconId,
           beaconOwnerId: req.body.beaconOwnerId,
@@ -49,11 +39,12 @@ exports.createConnectionRequest = async (req, res) => {
       new: true
     }
   )
+  // Find the requesting user and add outgoing request
   const requestingUserPromise = User.findOneAndUpdate(
     { _id: req.body.userId },
     {
       $set: {
-        'connectionRequests.outgoing': {
+        'outgoingConnectionRequest': {
           userId: req.body.userId,
           beaconId: req.body.beaconId,
           beaconOwnerId: req.body.beaconOwnerId,
@@ -72,11 +63,11 @@ exports.createConnectionRequest = async (req, res) => {
 };
 
 exports.cancelConnectionRequest = async (req, res) => {
-  const beaconOwnerPromise = User.findOneAndUpdate(
-    { _id: req.body.beaconOwnerId },
+  const beaconOwnerPromise = Beacon.findOneAndUpdate(
+    { _id: req.body.beaconId },
     {
       $pull: {
-        'connectionRequests.incoming': {
+        'incomingConnectionRequests': {
           userId: req.body.userId,
           beaconId: req.body.beaconId,
           beaconOwnerId: req.body.beaconOwnerId,
@@ -90,12 +81,149 @@ exports.cancelConnectionRequest = async (req, res) => {
     { _id: req.body.userId },
     {
       $set: {
-        'connectionRequests.outgoing': {}
+        'outgoingConnectionRequest': {}
       }
     }, {
       new: true
     }
   ).select('-password')
   const [beaconOwner, requestingUser] = await Promise.all([beaconOwnerPromise, requestingUserPromise]);
+  res.status(200).send(requestingUser);
+}
+
+exports.denyConnectionRequest = async (req, res) => {
+  const beaconPromise = Beacon.findOneAndUpdate(
+    { _id: req.body.beaconId },
+    {
+      $pull: {
+        'incomingConnectionRequests': {
+          userId: req.body.userId,
+          beaconId: req.body.beaconId,
+          beaconOwnerId: req.body.beaconOwnerId,
+        }
+      }
+    }, {
+      new: true
+    }
+  )
+  const requestingUserPromise = User.findOneAndUpdate(
+    { _id: req.body.userId },
+    {
+      $set: {
+        'outgoingConnectionRequest': {}
+      }
+    }, {
+      new: true
+    }
+  ).select('-password')
+  const [beacon, requestingUser] = await Promise.all([beaconPromise, requestingUserPromise]);
+  res.status(200).send(beacon);
+}
+
+exports.approveConnectionRequest = async (req, res) => {
+  let date = Date.now()
+  const beaconPromise = Beacon.findOneAndUpdate(
+    { _id: req.body.beaconId },
+    {
+      $pull: {
+        'incomingConnectionRequests': {
+          userId: req.body.userId,
+          beaconId: req.body.beaconId,
+          beaconOwnerId: req.body.beaconOwnerId,
+        }
+      },
+      $push: {
+        'connections': {
+          userId: req.body.userId,
+          beaconId: req.body.beaconId,
+          beaconOwnerId: req.body.beaconOwnerId,
+          ownerName: req.body.ownerName,
+          name: req.body.name,
+          gravatar: req.body.gravatar,
+          created: date
+        }
+      }
+    }, {
+      new: true
+    }
+  )
+  const requestingUserPromise = User.findOneAndUpdate(
+    { _id: req.body.userId },
+    {
+      $set: {
+        'outgoingConnectionRequest': {},
+        'connectedTo': {
+          userId: req.body.userId,
+          beaconId: req.body.beaconId,
+          beaconOwnerId: req.body.beaconOwnerId,
+          ownerName: req.body.ownerName,
+          name: req.body.name,
+          gravatar: req.body.gravatar,
+          created: date
+        }
+      }
+    }, {
+      new: true
+    }
+  ).select('-password')
+  const [beacon, requestingUser] = await Promise.all([beaconPromise, requestingUserPromise]);
+  res.status(200).send(beacon);
+}
+
+exports.removeConnection = async (req, res) => {
+  const beaconPromise = Beacon.findOneAndUpdate(
+    { _id: req.body.beaconId },
+    {
+      $pull: {
+        'connections': {
+          userId: req.body.userId,
+          beaconId: req.body.beaconId,
+          beaconOwnerId: req.body.beaconOwnerId,
+        }
+      }
+    }, {
+      new: true
+    }
+  )
+  const requestingUserPromise = User.findOneAndUpdate(
+    { _id: req.body.userId },
+    {
+      $set: {
+        'connectedTo': {}
+      }
+    }, {
+      new: true
+    }
+  ).select('-password')
+  const [beacon, requestingUser] = await Promise.all([beaconPromise, requestingUserPromise]);
+  res.status(200).send(beacon);
+}
+
+exports.disconnectFromBeacon = async (req, res) => {
+  const beaconPromise = Beacon.findOneAndUpdate(
+    { _id: req.body.beaconId },
+    {
+      $pull: {
+        'connections': {
+          userId: req.body.userId,
+          beaconId: req.body.beaconId,
+          beaconOwnerId: req.body.beaconOwnerId,
+        }
+      }
+    }, {
+      new: true
+    }
+  )
+  const requestingUserPromise = User.findOneAndUpdate(
+    { _id: req.body.userId },
+    {
+      $set: {
+        'connectedTo': {}
+      }
+    }, {
+      new: true
+    }
+  ).select('-password')
+  const [beacon, requestingUser] = await Promise.all([beaconPromise, requestingUserPromise]);
   res.status(200).send(requestingUser);
 }

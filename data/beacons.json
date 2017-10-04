@@ -89,6 +89,28 @@
       },
       "password": null,
       "tags": ["Connection test", "Please work"]
-    }
+    },
+    "incomingConnectionRequests": [
+      {
+        "_id": "59d3f634f0ca66088e06f05d",
+        "created": "2017-10-03 16:42:28.608",
+        "gravatar": "https://gravatar.com/avatar/625373337558523d07bbb7566a3b6244?s=200&d=mm",
+        "name": "Blackiron Tarkus",
+        "ownerName": "Clayton Kinder",
+        "beaconOwnerId": "59c4049b6ea92c74720f627a",
+        "beaconId": "59cb1a29c3368b2321466357",
+        "userId": "59c1948194fd361ccc03e672"
+      },
+      {
+        "_id": "59d3f723b0cb76094b65086d",
+        "created": "2017-10-03 16:46:27.020",
+        "gravatar": "https://gravatar.com/avatar/3145f33df5dd3f3a2bf76a6fe0dfb686?s=200&d=mm",
+        "name": "Trusty Patches",
+        "ownerName": "Clayton Kinder",
+        "beaconOwnerId": "59c4049b6ea92c74720f627a",
+        "beaconId": "59cb1a29c3368b2321466357",
+        "userId": "59c1954194fd361ccc03e675"
+      }
+    ]
   }
 ]

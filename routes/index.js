@@ -47,15 +47,30 @@ router.post('/connection/createconnectionrequest',
   beaconController.checkBeaconDistance,
   catchErrors(connectionController.createConnectionRequest)
 );
-router.post('/connection/severconnectionstobeacon',
-  authController.hasToken,
-  // authController.verifyBeaconOwnerId,
-  catchErrors(connectionController.severConnectionsToBeacon)
-);
 router.post('/connection/cancelconnectionrequest',
   authController.hasToken,
   authController.verifyUserId,
   catchErrors(connectionController.cancelConnectionRequest)
+);
+router.post('/connection/denyconnectionrequest',
+  authController.hasToken,
+  authController.verifyBeaconOwnerId,
+  catchErrors(connectionController.denyConnectionRequest)
+);
+router.post('/connection/approveconnectionrequest',
+  authController.hasToken,
+  authController.verifyBeaconOwnerId,
+  catchErrors(connectionController.approveConnectionRequest)
+);
+router.post('/connection/removeconnection',
+  authController.hasToken,
+  authController.verifyBeaconOwnerId,
+  catchErrors(connectionController.removeConnection)
+);
+router.post('/connection/disconnectfrombeacon',
+  authController.hasToken,
+  authController.verifyUserId,
+  catchErrors(connectionController.disconnectFromBeacon)
 );
 // router.get('/', catchErrors(storeController.getStores));
 // router.get('/stores', catchErrors(storeController.getStores));

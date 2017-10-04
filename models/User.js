@@ -58,6 +58,29 @@ const userSchema = new Schema({
       return (date < now)
     }
   },
+  connectedTo: {
+    userId: {
+      type: Schema.Types.ObjectId
+    },
+    beaconId: {
+      type: Schema.Types.ObjectId
+    },
+    beaconOwnerId: {
+      type: Schema.Types.ObjectId
+    },
+    ownerName: {
+      type: String
+    },
+    name: {
+      type: String
+    },
+    gravatar: {
+      type: String
+    },
+    created: {
+      type: Date
+    }
+  },
   settings: {
     beaconLimit: {
       required: true,
@@ -90,53 +113,28 @@ const userSchema = new Schema({
       default: '#FF0000'
     }
   },
-  connectionRequests: {
-    outgoing: {
-      userId: {
-        type: Schema.Types.ObjectId
-      },
-      beaconId: {
-        type: Schema.Types.ObjectId
-      },
-      beaconOwnerId: {
-        type: Schema.Types.ObjectId
-      },
-      ownerName: {
-        type: String
-      },
-      name: {
-        type: String
-      },
-      gravatar: {
-        type: String
-      },
-      created: {
-        type: Date
-      }
+  outgoingConnectionRequest: {
+    userId: {
+      type: Schema.Types.ObjectId
     },
-    incoming: [{
-      userId: {
-        type: Schema.Types.ObjectId
-      },
-      beaconId: {
-        type: Schema.Types.ObjectId
-      },
-      beaconOwnerId: {
-        type: Schema.Types.ObjectId
-      },
-      ownerName: {
-        type: String
-      },
-      name: {
-        type: String
-      },
-      gravatar: {
-        type: String
-      },
-      created: {
-        type: Date
-      }
-    }]
+    beaconId: {
+      type: Schema.Types.ObjectId
+    },
+    beaconOwnerId: {
+      type: Schema.Types.ObjectId
+    },
+    ownerName: {
+      type: String
+    },
+    name: {
+      type: String
+    },
+    gravatar: {
+      type: String
+    },
+    created: {
+      type: Date
+    }
   },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
@@ -147,13 +145,6 @@ const userSchema = new Schema({
 });
 
 userSchema.virtual('beacon', {
-  ref: 'Beacon', // What model to link?
-  localField: '_id', // Which field on the user?
-  foreignField: 'author', // Which field on the beacon?
-  justOne: true
-});
-
-userSchema.virtual('hostBeacon', {
   ref: 'Beacon', // What model to link?
   localField: '_id', // Which field on the user?
   foreignField: 'author', // Which field on the beacon?
