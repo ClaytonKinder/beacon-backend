@@ -37,15 +37,10 @@ exports.lightBeacon = async (req, res) => {
 };
 
 exports.extinguishBeacon = async (req, res) => {
+
+  await Beacon.remove({ author: req.body.userId });
   const user = await User.findOne({ _id: req.body.userId });
-  Beacon.remove({ author: req.body.userId }, function(err) {
-    if (err) {
-      res.status(404).json({ success: false, message: 'Unable to extinguish beacon at this time' });
-    }
-    else {
-      res.status(200).json(user);
-    }
-  });
+  res.status(200).json(user);
 };
 
 function filterBeacons (beacons, user) {

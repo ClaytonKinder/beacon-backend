@@ -20,11 +20,12 @@ async function deleteData() {
   // await Store.remove();
   await Beacon.remove();
   await User.remove();
-  console.log('Data deleted. To load sample data, run\n\n\t npm run sample\n\n');
+  console.log('Sample data deleted. To load sample data, run\n\n\t npm run sample\n\n');
   process.exit();
 }
 
 async function loadData() {
+  console.log('Loading data...');
   try {
     // await Store.insertMany(stores);
     await Beacon.insertMany(beacons);

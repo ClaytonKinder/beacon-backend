@@ -45,7 +45,9 @@ const beaconSchema = new mongoose.Schema({
   },
   connections: [{
     userId: {
-      type: Schema.Types.ObjectId
+      type: Schema.Types.ObjectId,
+      unique: true,
+      sparse: true
     },
     beaconId: {
       type: Schema.Types.ObjectId
@@ -68,7 +70,9 @@ const beaconSchema = new mongoose.Schema({
   }],
   incomingConnectionRequests: [{
     userId: {
-      type: Schema.Types.ObjectId
+      type: Schema.Types.ObjectId,
+      unique: true,
+      sparse: true
     },
     beaconId: {
       type: Schema.Types.ObjectId

@@ -1,8 +1,8 @@
 [
   {
     "_id":"59c199e0bb52a7639af41595",
-    "name": "Need praisers of the sun!",
-    "description": "Looking for people to bask in the light of our glorious sun. Ahh, what gross incandescence.",
+    "name": "Warriors of the sun!",
+    "description": "Looking for people to come bask in the light of our glorious sun. Ahh, how grossly incandescent.",
     "author": "59c191aaf58284645a67ecd0",
     "color":"#FFFFFF",
     "location":{
@@ -24,8 +24,8 @@
   },
   {
     "_id":"59c19b2c4177e26d6ef94d1c",
-    "name": "Beacon of Siegmeyer of Catarina",
-    "description": "This is the beacon of Siegmeyer of Catarina",
+    "name": "Need help getting past this obstacle",
+    "description": "Perhaps I could try some rolling? Bah, no chance. My head would spin. Mmm...",
     "author": "59c194e994fd361ccc03e673",
     "color":"#2FF20D",
     "location":{
@@ -36,19 +36,19 @@
       ]
     },
     "additionalSettings": {
-      "genderRestriction": "femaleOnly",
+      "genderRestriction": null,
       "ageRange": {
         "min": 18,
         "max": 100
       },
       "password": null,
-      "tags": ["Nap", "Toast", "Hmm..."]
+      "tags": ["Quite a pickle", "Hmm...", "Oh-hoh!"]
     }
   },
   {
     "_id":"59c19b97737b1b6cae0ca0de",
-    "name": "Beacon of Lautrec of Carim",
-    "description": "This is the beacon of Lautrec of Carim",
+    "name": "Gather humanity for the true Goddess",
+    "description": "The goddess Fina needs humanity. Pay your respects by helping me gather some.",
     "author": "59c193022c4d8546eea9cbde",
     "color":"#F00FCE",
     "location":{

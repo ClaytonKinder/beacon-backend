@@ -3,9 +3,9 @@ const Beacon = mongoose.model('Beacon');
 const User = mongoose.model('User');
 const { checkMinMax } = require('../helpers');
 
-exports.severAllConnectionRequestsToBeacon = async (req, res, next) => {
+exports.severAllConnectionsToBeacon = async (req, res, next) => {
   // Find all users with outgoing requests to the severed beacon to remove them
-  const removeOutgoingPromise = User.update(
+  const removingOutgoingRequestsPromise = User.update(
     { 'outgoingConnectionRequest.beaconId': req.body.beaconId },
     {
       $unset: {
@@ -15,16 +15,53 @@ exports.severAllConnectionRequestsToBeacon = async (req, res, next) => {
       new: true
     }
   )
-  await Promise.all([removeOutgoingPromise, removeIncomingPromise]);
+  const removingConnectionsPromise = User.update(
+    { 'connectedTo.beaconId': req.body.beaconId },
+    {
+      $unset: {
+        'connectedTo': ''
+      }
+    }, {
+      new: true
+    }
+  )
+  await Promise.all([removingOutgoingRequestsPromise, removingConnectionsPromise]);
   next()
+}
+
+exports.checkIfConnectionRequestAlreadyExists = async (req, res, next) => {
+  // This prevents duplicate connection requests for the same beacon
+  const connectionRequest = await User.findOne({
+    _id: req.body.userId,
+    'outgoingConnectionRequest.beaconId': req.body.beaconId
+  })
+  if (connectionRequest) {
+    res.status(404).send({ success: false, message: 'You have already sent a connection request to this beacon' });
+  } else {
+    next();
+  }
 }
 
 exports.createConnectionRequest = async (req, res) => {
   // Find owner of severed beacon and add incoming request
+  await Beacon.update(
+    {},
+    {
+      $pull: {
+        incomingConnectionRequests: {
+          userId: req.body.userId
+        }
+      }
+    }, {
+      multi: true,
+      new: true,
+      runValidators: true
+    }
+  )
   const beaconOwnerPromise = Beacon.findOneAndUpdate(
     { _id: req.body.beaconId },
     {
-      $push: {
+      $addToSet: {
         'incomingConnectionRequests': {
           userId: req.body.userId,
           beaconId: req.body.beaconId,
@@ -36,7 +73,8 @@ exports.createConnectionRequest = async (req, res) => {
         }
       }
     }, {
-      new: true
+      new: true,
+      runValidators: true
     }
   )
   // Find the requesting user and add outgoing request
@@ -55,7 +93,8 @@ exports.createConnectionRequest = async (req, res) => {
         }
       }
     }, {
-      new: true
+      new: true,
+      runValidators: true
     }
   ).select('-password')
   const [beaconOwner, requestingUser] = await Promise.all([beaconOwnerPromise, requestingUserPromise]);
