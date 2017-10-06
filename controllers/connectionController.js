@@ -245,8 +245,7 @@ exports.disconnectFromBeacon = async (req, res) => {
       $pull: {
         'connections': {
           userId: req.body.userId,
-          beaconId: req.body.beaconId,
-          beaconOwnerId: req.body.beaconOwnerId,
+          beaconId: req.body.beaconId
         }
       }
     }, {

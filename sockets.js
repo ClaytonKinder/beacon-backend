@@ -20,7 +20,7 @@ module.exports = function (io) {
       },
       removeConnection: {
         type: 'negative',
-        message: `You have been removed from the beacon of ${data.fromName}`,
+        message: `You have been removed from ${generatePossessive(data.fromName)} beacon`,
         dispatch: 'refreshUser'
       },
       disconnectFromBeacon: {
@@ -28,10 +28,20 @@ module.exports = function (io) {
       },
       extinguishBeacon: {
         type: 'negative',
-        message: `The beacon of ${data.fromName} has been extinguished`,
+        message: `${generatePossessive(data.fromName)} beacon has been extinguished`,
         dispatch: 'refreshUser'
       }
     }
+  }
+
+  function generatePossessive (str) {
+    if (str.substr(str.length - 1) !== 's') {
+      str += '\'';
+      str += 's';
+    } else {
+      str += '\'';
+    }
+    return str;
   }
 
   function getSocketByUserId (userId) {

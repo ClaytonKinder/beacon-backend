@@ -89,10 +89,15 @@ const userSchema = new Schema({
       min: 1,
       max: 100
     },
-    playSound: {
+    playBeaconSound: {
       required: true,
       type: Boolean,
       default: false
+    },
+    playNotificationSound: {
+      required: true,
+      type: Boolean,
+      default: true
     },
     unitOfMeasurement: {
       required: true,
