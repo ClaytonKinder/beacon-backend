@@ -37,7 +37,6 @@ exports.lightBeacon = async (req, res) => {
 };
 
 exports.extinguishBeacon = async (req, res) => {
-
   await Beacon.remove({ author: req.body.userId });
   const user = await User.findOne({ _id: req.body.userId });
   res.status(200).json(user);
@@ -60,6 +59,31 @@ function filterBeacons (beacons, user) {
     return keepBeacon;
   })
   return filtered;
+}
+
+exports.verifyBeaconRequirements = async (req, res, next) => {
+  const beacon = await Beacon.findOne({ _id: req.body.beaconId });
+  if (!beacon) {
+    res.status(404).send({ success: false, message: 'Beacon does not exist' });
+  } else {
+    let keepBeacon = true;
+    let filterArray = [
+      (req.body.user.age < beacon.additionalSettings.ageRange.min),
+      (req.body.user.age > beacon.additionalSettings.ageRange.max),
+      (beacon.additionalSettings.genderRestriction === 'maleOnly' && req.body.user.gender !== 'male'),
+      (beacon.additionalSettings.genderRestriction === 'femaleOnly' && req.body.user.gender !== 'female')
+    ];
+    filterArray.map((filter) => {
+      if (filter) {
+        keepBeacon = false
+      }
+    })
+    if (keepBeacon) {
+      next()
+    } else {
+      res.status(404).send({ success: false, message: 'You do not meet the requirements to connect with this beacon' });
+    }
+  }
 }
 
 exports.mapBeacons = async (req, res) => {
@@ -134,4 +158,26 @@ exports.verifyUserHasNoBeacon = async (req, res, next) => {
   } else {
     next();
   }
+}
+
+exports.verifyBeaconPassword = (req, res) => {
+  // find the user
+  Beacon.findOne({
+    _id: req.body.beaconId
+  }, function(err, beacon) {
+    if (err) throw err;
+    if (!beacon) {
+      res.status(400).json({ success: false, message: 'This beacon does not exist' });
+    } else if (beacon) {
+      beacon.comparePassword(req.body.password, function(err, isMatch) {
+        if (err) {
+          res.status(400).json({ success: false, message: 'Oops! Something went wrong during the validation process' });
+        } else if (!isMatch) {
+          res.status(400).json({ success: false, message: 'Incorrect password' });
+        } else {
+          res.status(200).send(true)
+        }
+      });
+    }
+  });
 }

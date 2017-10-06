@@ -51,11 +51,20 @@ const userSchema = new Schema({
   dateOfBirth: {
     type: Date,
     required: true,
-    validate: function (value) {
-      let date = new Date(value)
+    validate: function (dateOfBirth) {
+      // Make sure date is in the past
+      let date = new Date(dateOfBirth)
       let now = new Date()
       now.setHours(0, 0, 0, 0)
-      return (date < now)
+      // Make sure user is at least 18
+      let dob = new Date(dateOfBirth)
+      var age = now.getFullYear() - dob.getFullYear()
+      var m = now.getMonth() - dob.getMonth()
+      if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) {
+        age--
+      }
+
+      return (date < now && age >= 18)
     }
   },
   connectedTo: {

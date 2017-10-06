@@ -63,6 +63,10 @@ router.post('/beacon/getnearbybeacons',
   authController.hasToken,
   catchErrors(beaconController.mapBeacons)
 );
+router.post('/beacon/verifybeaconpassword',
+  authController.hasToken,
+  beaconController.verifyBeaconPassword
+);
 
 // Connections
 router.post('/connection/createconnectionrequest',
@@ -70,6 +74,7 @@ router.post('/connection/createconnectionrequest',
   authController.verifyUserId,
   beaconController.verifyUserHasNoBeacon,
   connectionController.checkIfConnectionRequestAlreadyExists,
+  catchErrors(beaconController.verifyBeaconRequirements),
   beaconController.checkBeaconDistance,
   catchErrors(connectionController.createConnectionRequest)
 );
