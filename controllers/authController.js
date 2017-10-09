@@ -26,7 +26,6 @@ exports.authenticate = (req, res) => {
             _id: user._id
           }
           var token = jwt.sign(tokenData, process.env.SECRET);
-
           // return the information including token as JSON
           res.status(200).json({
             success: true,
@@ -87,7 +86,6 @@ exports.isAuth = (req, res) => {
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
   // decode token
   if (token) {
-
     // verifies secret and checks exp
     jwt.verify(token, process.env.SECRET, function(err, decoded) {
       if (err) {
@@ -106,16 +104,10 @@ exports.isAuth = (req, res) => {
         })
       }
     });
-
   } else {
-
-    // if there is no token
-    // return an error
-    return res.status(403).send({
-        success: false,
-        message: 'No token provided.'
-    });
-
+    // Return this as status 200 simply so the console doesn't get spammed with errors
+    // everytime the user navigates to a different page in the prelogin portion
+    return res.status(200).send(false);
   }
 }
 
@@ -153,43 +145,80 @@ exports.verifyUserId = (req, res, next) => {
     }
   }
 }
+
+exports.forgotPassword = async (req, res) => {
+  // 1. See if a user with that email exists
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    req.flash('error', 'No account with that email exists.');
+    return res.redirect('/login');
+  }
+  // 2. Set reset tokens and expiry on their account
+  user.resetPasswordToken = crypto.randomBytes(20).toString('hex');
+  user.resetPasswordExpires = Date.now() + 3600000 // 1 hour from now
+  await user.save();
+  // 3. Send them an email with the token
+  const resetURL = `${process.env.FRONTEND}/reset-password/${user.resetPasswordToken}`;
+  await mail.send({
+    user,
+    subject: 'Password Reset',
+    resetURL,
+    filename: 'password-reset'
+  });
+  // req.flash('success', `You have been emailed a password reset link.`);
+  // 4. Redirect to login page
+  res.status(200).send(true)
+}
 //
-// exports.forgot = async (req, res) => {
-//   // 1. See if a user with that email exists
-//   const user = await User.findOne({ email: req.body.email });
-//   if (!user) {
-//     req.flash('error', 'No account with that email exists.');
-//     return res.redirect('/login');
-//   }
-//   // 2. Set reset tokens and expiry on their account
-//   user.resetPasswordToken = crypto.randomBytes(20).toString('hex');
-//   user.resetPasswordExpires = Date.now() + 3600000 // 1 hour from now
-//   await user.save();
-//   // 3. Send them an email with the token
-//   const resetURL = `http://${req.headers.host}/account/reset/${user.resetPasswordToken}`;
-//   await mail.send({
-//     user,
-//     subject: 'Password Reset',
-//     resetURL,
-//     filename: 'password-reset'
-//   });
-//   req.flash('success', `You have been emailed a password reset link.`);
-//   // 4. Redirect to login page
-//   res.redirect('/login');
-// }
-//
-// exports.reset = async (req, res) => {
-//   const user = await User.findOne({
-//     resetPasswordToken: req.params.token,
-//     resetPasswordExpires: { $gt: Date.now() }
-//   });
-//   if (!user) {
-//     req.flash('error', 'Password reset is invalid or has expired');
-//     return res.redirect('/login');
-//   }
-//   // If there is a user, show the reset password form
-//   res.render('reset', { title: 'Reset Your Password' });
-// }
+exports.validateResetPasswordToken = async (req, res) => {
+  const user = await User.findOne({
+    resetPasswordToken: req.body.resetPasswordToken,
+    resetPasswordExpires: { $gt: Date.now() }
+  });
+  if (!user) {
+    res.status(404).send({ success: false, message: 'Password reset is invalid or has expired' })
+  }
+  else {
+    res.status(200).send(user.email)
+  }
+}
+
+exports.validateResetPassword = (req, res, next) => {
+  req.checkBody('password', 'Password cannot be blank').notEmpty();
+  req.checkBody('password', 'Password must be between 8 and 50 characters').isLength({
+    min: 8,
+    max: 50
+  });
+  req.checkBody('passwordConfirmation', 'Confirmed password cannot be blank').notEmpty();
+  req.checkBody('passwordConfirmation', 'Oops! Your passwords do not match').equals(req.body.password);
+
+  const errors = req.validationErrors();
+  if (errors) {
+    res.status(400).json({ success: false, message: errors })
+    return; // Stop the function from running
+  }
+  console.log(1);
+  next(); // There were no errors
+};
+
+exports.resetPassword = async (req, res) => {
+    const user = await User.findOne({
+      email: req.body.email,
+      resetPasswordToken: req.body.resetPasswordToken,
+      resetPasswordExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      res.status(404).send({ success: false, message: 'Password reset is invalid or has expired' })
+    }
+    else {
+      user.password = req.body.password;
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpires = undefined;
+      const updatedUser = await user.save();
+      res.status(200).send(updatedUser);
+    }
+};
 //
 // exports.confirmedPasswords = (req, res, next) => {
 //   if (req.body.password === req.body['password-confirm']) {

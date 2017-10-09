@@ -82,12 +82,14 @@ module.exports = function (io) {
 
   io.on('connection', function (socket) {
     socket.on('userNavigatedToPostlogin', function (data) {
-      if (io.sockets.connected[socket.id]) {
+      if (io.sockets.connected[socket.id] && data) {
         io.sockets.connected[socket.id].userId = data.userId;
       }
     });
     socket.on('userNavigatedToPrelogin', function (data) {
-      delete io.sockets.connected[getSocketByUserId(data.userId).id];
+      if (data) {
+        delete io.sockets.connected[getSocketByUserId(data.userId).id];
+      }
     });
     socket.on('disconnect', function(){
       // console.log(Object.keys(io.sockets.connected).length);

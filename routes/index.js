@@ -40,6 +40,16 @@ router.post('/auth/register',
   catchErrors(userController.register),
   authController.authenticate
 );
+router.post('/auth/forgotpassword',
+  catchErrors(authController.forgotPassword)
+);
+router.post('/auth/validateresetpasswordtoken',
+  catchErrors(authController.validateResetPasswordToken)
+);
+router.post('/auth/resetpassword',
+  authController.validateResetPassword,
+  catchErrors(authController.resetPassword)
+);
 
 // location
 router.post('/location/getbeacondistance',

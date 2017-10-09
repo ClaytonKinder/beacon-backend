@@ -57,7 +57,7 @@ table {
 ------------------------------------- */
 .main {
   background: #fff;
-  border-top:20px solid #fff200;
+  border-top:20px solid #027be3;
   width: 100%; }
 
 .wrapper {
@@ -112,7 +112,7 @@ ol {
     margin-left: 5px; }
 
 a {
-  color: #fff200;
+  color: #027be3;
   text-decoration: underline; }
 
 /* -------------------------------------
@@ -131,10 +131,10 @@ a {
     text-align: center; }
   .btn a {
     background-color: #ffffff;
-    border: solid 1px #fff200;
+    border: solid 1px #027be3;
     border-radius: 5px;
     box-sizing: border-box;
-    color: #fff200;
+    color: #027be3;
     cursor: pointer;
     display: inline-block;
     font-size: 14px;
@@ -145,12 +145,12 @@ a {
     text-transform: capitalize; }
 
 .btn-primary table td {
-  background-color: #fff200; }
+  background-color: #027be3; }
 
 .btn-primary a {
-  background-color: #fff200;
-  border-color: #fff200;
-  color: #3a3a3a; }
+  background-color: #027be3;
+  border-color: #027be3;
+  color: white; }
 
 /* -------------------------------------
     OTHER STYLES THAT MIGHT BE USEFUL
@@ -255,9 +255,7 @@ hr {
     line-height: inherit !important;
     text-decoration: none !important; }
   .btn-primary table td:hover {
-    background-color: #00ffde !important; }
+    background-color: #0050b0 !important; }
   .btn-primary a:hover {
-    background-color: #00ffde !important;
-    border-color: #00ffde !important; } }
-
-
+    background-color: #0050b0 !important;
+    border-color: #0050b0 !important; } }
