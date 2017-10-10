@@ -75,14 +75,16 @@
       "playBeaconSound":false,
       "playNotificationSound":true
     },
-    "outgoingConnectionRequest": {
+    "connectedTo": {
       "created": 1507063152621,
       "gravatar": "https://gravatar.com/avatar/625373337558523d07bbb7566a3b6244?s=200&d=mm",
       "name": "Blackiron Tarkus",
-      "ownerName": "Clayton Kinder",
-      "beaconOwnerId": "59c4049b6ea92c74720f627a",
-      "beaconId": "59cb1a29c3368b2321466357",
-      "userId": "59c1948194fd361ccc03e672"
+      "ownerName": "Solaire of Astora",
+      "beaconOwnerId": "59c191aaf58284645a67ecd0",
+      "beaconId": "59c199e0bb52a7639af41595",
+      "userId": "59c1948194fd361ccc03e672",
+      "lng": -80.0407259,
+      "lat": 32.9181152
     }
   },
   {
@@ -122,18 +124,20 @@
       "playBeaconSound":false,
       "playNotificationSound":true
     },
-    "outgoingConnectionRequest": {
+    "connectedTo": {
       "created": 1507063184037,
       "gravatar": "https://gravatar.com/avatar/3145f33df5dd3f3a2bf76a6fe0dfb686?s=200&d=mm",
       "name": "Trusty Patches",
-      "ownerName": "Clayton Kinder",
-      "beaconOwnerId": "59c4049b6ea92c74720f627a",
-      "beaconId": "59cb1a29c3368b2321466357",
-      "userId": "59c1954194fd361ccc03e675"
+      "ownerName": "Solaire of Astora",
+      "beaconOwnerId": "59c191aaf58284645a67ecd0",
+      "beaconId": "59c199e0bb52a7639af41595",
+      "userId": "59c1954194fd361ccc03e675",
+      "lng": -80.0407259,
+      "lat": 32.9181152
     }
   },
   {
-    "_id":"59c1954194fd361ccc03e675",
+    "_id":"59dd3129fb469c51f4aa38f1",
     "salt":"9917810b3981604937e47b4a830b2610006bdfa8b0b12d1480882d8644283fd1",
     "hash":"12a0e12c5e57f50d77e84574efabb6dbd831fadc3b9038139a4452434ff826821e89e753e30c633326b2acd8119e462278e3e23292813c414e1938f5424bca1cc17dc4d01337f14f1c084e0a94614bf5e253193eab9827d426e6d9fbe97b08beac08d9691df5433bb4889d720c216d4d18ef8ab86679997ba6d875fc86988f1ea0798bf6a0c795af1a2544b05d8d5a504212da164ffc8d91b9b1059ecc8133fdd16b52fba64fe6e3e809cca1cad73b5f534c311f8978b82814be590fd3b7ad03f9cf7b27d7d67efea6bc4794d2fc71a0fc434b14f345fcfffa8983de39f8ad1aae5dc3dbbd4c766ce28d1462dc0752204624cafda4bc49997a045d6114fe9a768b3c191e91fabddd77fc8ef8bb5fca6f9af51cf135d310fa9dc49bfaac8a05e31ccc5ab8c94f99f0acd953dc821eb4e486b6c54368b93106305b0f216151496b1e0bf911e8e9323b96156f16af872a462941050827c8fb9092cee57dfb294727e39fb38dd77055ca335cea3581354169006a5fbb85b01a00d28483eb8a687358292d2b8b27b5dc018581f47c879bd566c741519a956b906c28da52ed6d4b39f9bf1e725d47389453aa4fabd3af8df9ca35a9e5dc8672aa062ea1af71303401c17ac9346d98f6f656804bdfcdbec60ecac91d5a172ea3e73745d13bb465e0638672595ffc2411ee91748c85a83cd30bdcd9ffd3e50c41162fe13ce41b6477d794",
     "email":"beaconfakedata+witch@gmail.com",
@@ -150,6 +154,48 @@
       "unitOfMeasurement":"miles",
       "playBeaconSound":false,
       "playNotificationSound":true
+    },
+    "connectedTo": {
+      "created": 1507063184037,
+      "gravatar": "https://gravatar.com/avatar/02ff82e9b0e72ab207e171b853d95ac9?s=200&d=mm",
+      "name": "Witch Beatrice",
+      "ownerName": "Solaire of Astora",
+      "beaconOwnerId": "59c191aaf58284645a67ecd0",
+      "beaconId": "59c199e0bb52a7639af41595",
+      "userId": "59dd3129fb469c51f4aa38f1",
+      "lng": -80.0407259,
+      "lat": 32.9181152
+    }
+  },
+  {
+    "_id":"59dd31b8405920522dac4194",
+    "salt":"dbdf1f18c9b60ef1d53f224749f8550fab12802812673296b2ef900052f4a635",
+    "hash":"f1323eefa3ff0b12afcd00df1ec570330df23c383e7ec2e982255484265fb460e9d7e076ef856834b09da1b59cb7c02141b641bb6d9fb123788e5d77fc576c42f19fd556e2cf98deefa97d162e8c94783a7f8b3bfeeb0d58a091ca55cb0ba6d1d26c1ef2955a441524d4a08ca90cea1ae0272e7bc05cc22e6c77f04c7c1710266d6631993b71cebef054b3513482fe610b8824bb06c27c887c84c0f7941fa364241a0f11528eaa4796bfae487586140495c3051a88832b8063bd1abc02b31a8dfa019f42a93c1c6f6313fc3e3cb271cd5e8f979dbb5080483268652827ab594c8782cb24e0e7f8c06db2847b5ce361afe95598a2e859e9d3f64b646b99d6fc58c1f558bd64fbebd6b3c02a49596b01b5505b4e1fab2fc08f15cbfbe1b1979a213e41b44b900dbc620ed634be0ff37efc0102dc457ed09db716a157739d6f53d96750882e288ccf25e6982119ed1a9583a2bc13b9ed6f494a85e7f148c19ad98070dd9c58b63be7b802c1f62d85006914db9de25bb7956024b21d1b685f4335e39aff7bf9bded91e7725384aef67bc8d68d53de9a389909d8cce95ae76ce5ba7b717c91c72581651b5b02671b04e0c6f2604a06689d4333ec57fc5947c037d5f85512a93fe3db10229d2bb15b5779fc92f94ae4beff407c52de494afd38dc33040625c226c6f14b481afd7d6e542ffe206a1d519c63fcdb6f8962d51b3eac2976",
+    "email":"beaconfakedata+laurentius@gmail.com",
+    "lowercaseEmail":"beaconfakedata+laurentius@gmail.com",
+    "password":"$2a$10$hHM5Qah3CygHR2jV9Q.osehLAyOsjDLsB6oLdHiMWoSmBLQWGDBXq",
+    "firstName":"Laurentius",
+    "lastName":"of the Great Swamp",
+    "dateOfBirth": "1988-08-29T04:00:00.000Z",
+    "gender": "male",
+    "settings":{
+      "beaconLimit": 50,
+      "defaultColor":"#FF0000",
+      "searchRadius":15,
+      "unitOfMeasurement":"miles",
+      "playBeaconSound":false,
+      "playNotificationSound":true
+    },
+    "connectedTo": {
+      "created": 1507063184037,
+      "gravatar": "https://gravatar.com/avatar/0523e06712316eda37844fa317bc09f9?s=200&d=mm",
+      "name": "Laurentius of the Great Swamp",
+      "ownerName": "Solaire of Astora",
+      "beaconOwnerId": "59c191aaf58284645a67ecd0",
+      "beaconId": "59c199e0bb52a7639af41595",
+      "userId": "59dd31b8405920522dac4194",
+      "lng": -80.0407259,
+      "lat": 32.9181152
     }
   }
 ]

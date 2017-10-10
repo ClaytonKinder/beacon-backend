@@ -4,31 +4,6 @@ const User = mongoose.model('User');
 const { checkMinMax } = require('../helpers');
 let distance = require('google-distance');
 distance.apiKey = process.env.DISTANCEMATRIX_API_KEY
-// const multer = require('multer');
-// const jimp = require('jimp');
-// const uuid = require('uuid');
-
-// exports.validateBeaconRegister = (req, res, next) => {
-//   req.sanitizeBody('firstName');
-//   req.checkBody('firstName', 'You must supply a first name!').notEmpty();
-//   req.checkBody('lastName', 'You must supply a last name!').notEmpty();
-//   req.checkBody('email', 'That email is not valid!').isEmail();
-//   req.sanitizeBody('email').normalizeEmail({
-//     remove_dots: false,
-//     remove_extension: false,
-//     gmail_remove_subaddress: false
-//   });
-//   req.checkBody('password', 'Password cannot be blank!').notEmpty();
-//   req.checkBody('passwordConfirmation', 'Confirmed password cannot be blank!').notEmpty();
-//   req.checkBody('passwordConfirmation', 'Oops! Your passwords do not match').equals(req.body.password);
-//
-//   const errors = req.validationErrors();
-//   if (errors) {
-//     res.status(400).json(errors)
-//     return; // Stop the function from running
-//   }
-//   next(); // There were no errors
-// };
 
 exports.lightBeacon = async (req, res) => {
   const beacon = await(new Beacon(req.body)).save();
@@ -105,10 +80,10 @@ exports.mapBeacons = async (req, res) => {
   }
   Beacon.find(q).populate('author').exec((err, beacons) => {
     if (err) {
-      res.status(404).send({ success: false, message: 'Could not get beacons at this time' })
+      return res.status(404).send({ success: false, message: 'Could not get beacons at this time' })
     }
     if (!beacons) {
-      res.status(404).send({ success: false, message: 'There are no beacons around you at this time' })
+      return res.status(404).send({ success: false, message: 'There are no beacons around you at this time' })
     }
     beacons = filterBeacons(beacons, req.body.user).slice(0, limit - 1);
     if (req.body.user.beacon) {

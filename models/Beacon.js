@@ -169,7 +169,6 @@ beaconSchema.pre('save', function(next) {
 });
 
 beaconSchema.methods.comparePassword = function(candidatePassword, cb) {
-  console.log(candidatePassword, this.additionalSettings.password);
     bcrypt.compare(candidatePassword, this.additionalSettings.password, function(err, isMatch) {
         if (err) return cb(err);
         cb(null, isMatch);

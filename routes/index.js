@@ -77,6 +77,10 @@ router.post('/beacon/verifybeaconpassword',
   authController.hasToken,
   beaconController.verifyBeaconPassword
 );
+router.post('/beacon/getconnectedbeaconinformation',
+  authController.hasToken,
+  catchErrors(beaconController.getConnectedBeaconInformation)
+);
 
 // Connections
 router.post('/connection/createconnectionrequest',
