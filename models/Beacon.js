@@ -67,6 +67,12 @@ const beaconSchema = new mongoose.Schema({
     },
     created: {
       type: Date
+    },
+    lat: {
+      type: Number
+    },
+    lng: {
+      type: Number
     }
   }],
   incomingConnectionRequests: [{
@@ -92,6 +98,12 @@ const beaconSchema = new mongoose.Schema({
     },
     created: {
       type: Date
+    },
+    lat: {
+      type: Number
+    },
+    lng: {
+      type: Number
     }
   }],
   additionalSettings: {
@@ -163,13 +175,5 @@ beaconSchema.methods.comparePassword = function(candidatePassword, cb) {
         cb(null, isMatch);
     });
 };
-
-// function autopopulate(next) {
-//   this.populate('author');
-//   next();
-// }
-//
-// beaconSchema.pre('find', autopopulate);
-// beaconSchema.pre('findOne', autopopulate);
 
 module.exports = mongoose.model('Beacon', beaconSchema);

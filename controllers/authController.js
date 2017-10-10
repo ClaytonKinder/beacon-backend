@@ -1,4 +1,4 @@
-const passport = require('passport');
+// const passport = require('passport');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
@@ -196,7 +196,6 @@ exports.validateResetPassword = (req, res, next) => {
     res.status(400).json({ success: false, message: errors })
     return; // Stop the function from running
   }
-  console.log(1);
   next(); // There were no errors
 };
 

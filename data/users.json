@@ -131,5 +131,25 @@
       "beaconId": "59cb1a29c3368b2321466357",
       "userId": "59c1954194fd361ccc03e675"
     }
+  },
+  {
+    "_id":"59c1954194fd361ccc03e675",
+    "salt":"9917810b3981604937e47b4a830b2610006bdfa8b0b12d1480882d8644283fd1",
+    "hash":"12a0e12c5e57f50d77e84574efabb6dbd831fadc3b9038139a4452434ff826821e89e753e30c633326b2acd8119e462278e3e23292813c414e1938f5424bca1cc17dc4d01337f14f1c084e0a94614bf5e253193eab9827d426e6d9fbe97b08beac08d9691df5433bb4889d720c216d4d18ef8ab86679997ba6d875fc86988f1ea0798bf6a0c795af1a2544b05d8d5a504212da164ffc8d91b9b1059ecc8133fdd16b52fba64fe6e3e809cca1cad73b5f534c311f8978b82814be590fd3b7ad03f9cf7b27d7d67efea6bc4794d2fc71a0fc434b14f345fcfffa8983de39f8ad1aae5dc3dbbd4c766ce28d1462dc0752204624cafda4bc49997a045d6114fe9a768b3c191e91fabddd77fc8ef8bb5fca6f9af51cf135d310fa9dc49bfaac8a05e31ccc5ab8c94f99f0acd953dc821eb4e486b6c54368b93106305b0f216151496b1e0bf911e8e9323b96156f16af872a462941050827c8fb9092cee57dfb294727e39fb38dd77055ca335cea3581354169006a5fbb85b01a00d28483eb8a687358292d2b8b27b5dc018581f47c879bd566c741519a956b906c28da52ed6d4b39f9bf1e725d47389453aa4fabd3af8df9ca35a9e5dc8672aa062ea1af71303401c17ac9346d98f6f656804bdfcdbec60ecac91d5a172ea3e73745d13bb465e0638672595ffc2411ee91748c85a83cd30bdcd9ffd3e50c41162fe13ce41b6477d794",
+    "email":"beaconfakedata+witch@gmail.com",
+    "lowercaseEmail":"beaconfakedata+witch@gmail.com",
+    "password":"$2a$10$UP050q0nF8aKotGEBtmaee2uKtyBOX1avEVHQphUWU5g.RFBC/D0y",
+    "firstName":"Witch",
+    "lastName":"Beatrice",
+    "dateOfBirth": "1983-03-14T04:00:00.000Z",
+    "gender": "female",
+    "settings":{
+      "beaconLimit": 50,
+      "defaultColor":"#FF0000",
+      "searchRadius":15,
+      "unitOfMeasurement":"miles",
+      "playBeaconSound":false,
+      "playNotificationSound":true
+    }
   }
 ]

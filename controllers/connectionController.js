@@ -69,6 +69,8 @@ exports.createConnectionRequest = async (req, res) => {
           ownerName: req.body.ownerName,
           name: req.body.name,
           gravatar: req.body.gravatar,
+          lat: req.body.lat,
+          lng: req.body.lng,
           created: Date.now()
         }
       }
@@ -89,6 +91,8 @@ exports.createConnectionRequest = async (req, res) => {
           ownerName: req.body.ownerName,
           name: req.body.name,
           gravatar: req.body.gravatar,
+          lat: req.body.lat,
+          lng: req.body.lng,
           created: Date.now()
         }
       }
@@ -198,6 +202,8 @@ exports.approveConnectionRequest = async (req, res) => {
           ownerName: req.body.ownerName,
           name: req.body.name,
           gravatar: req.body.gravatar,
+          lat: req.body.lat,
+          lng: req.body.lng,
           created: date
         }
       }

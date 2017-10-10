@@ -104,6 +104,12 @@ exports.mapBeacons = async (req, res) => {
     }
   }
   Beacon.find(q).populate('author').exec((err, beacons) => {
+    if (err) {
+      res.status(404).send({ success: false, message: 'Could not get beacons at this time' })
+    }
+    if (!beacons) {
+      res.status(404).send({ success: false, message: 'There are no beacons around you at this time' })
+    }
     beacons = filterBeacons(beacons, req.body.user).slice(0, limit - 1);
     if (req.body.user.beacon) {
       Beacon.findOne({ author: req.body.user._id }).populate('author').exec((err, userBeacon) => {
@@ -119,7 +125,7 @@ exports.mapBeacons = async (req, res) => {
 exports.checkBeaconDistance = (req, res, next) => {
   distance.get({
     origin: `${req.body.userLat},${req.body.userLng}`,
-    destination: `${req.body.beaconLat},${req.body.beaconLng}`
+    destination: `${req.body.lat},${req.body.lng}`
   },
   (err, data) => {
     if (err) {
