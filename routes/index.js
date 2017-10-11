@@ -6,6 +6,11 @@ const connectionController = require('../controllers/connectionController');
 const authController = require('../controllers/authController');
 const { catchErrors } = require('../handlers/errorHandlers');
 
+// Index
+router.get('/',
+  res.status(200).send('Welcome to the Beacon API!')
+);
+
 // User
 router.post('/user/updateusersettings',
   authController.hasToken,
