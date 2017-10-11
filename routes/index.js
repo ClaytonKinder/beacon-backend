@@ -8,7 +8,8 @@ const { catchErrors } = require('../handlers/errorHandlers');
 
 // Index
 router.get('/', (req, res) => {
-  res.status(200).send('Welcome to the Beacon API!')
+  console.log('Yo!');
+  res.status(200).send('Welcome to the Beacon API!');
 });
 
 // User
