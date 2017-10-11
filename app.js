@@ -69,6 +69,10 @@ app.use((req, res, next) => {
   next();
 });
 
+router.get('/', (req, res) => {
+  res.redirect('/api/v1/');
+});
+
 // After allllll that above middleware, we finally handle our own routes!
 app.use('/api/v1/', routes);
 // app.use(express.static(__dirname))
