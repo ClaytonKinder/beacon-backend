@@ -147,10 +147,10 @@ exports.verifyUserId = (req, res, next) => {
 
 exports.forgotPassword = async (req, res) => {
   // 1. See if a user with that email exists
+  console.log(req.body.email);
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
-    req.flash('error', 'No account with that email exists.');
-    return res.redirect('/login');
+    return req.status(404).send({ success: false, message: 'No account with that email exists' });
   }
   // 2. Set reset tokens and expiry on their account
   user.resetPasswordToken = crypto.randomBytes(20).toString('hex');
