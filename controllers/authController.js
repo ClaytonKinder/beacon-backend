@@ -148,7 +148,7 @@ exports.verifyUserId = (req, res, next) => {
 exports.forgotPassword = async (req, res) => {
   // 1. See if a user with that email exists
   console.log(req.body.email);
-  const user = await User.findOne({ email: req.body.email });
+  const user = await User.findOne({ lowercaseEmail: req.body.email.toLowerCase() });
   if (!user) {
     return req.status(404).send({ success: false, message: 'No account with that email exists' });
   }
