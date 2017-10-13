@@ -4,20 +4,6 @@ const promisify = require('es6-promisify');
 const { noDataFound } = require('../handlers/errorHandlers');
 const { getAgeFromDateOfBirth } = require('../helpers');
 
-// exports.getUserByEmail = async (req, res) => {
-//   const user = await User.findOne({ email: req.params.email });
-//   if (!user) {
-//     noDataFound(res, 'users');
-//     return;
-//   }
-//   res.status(200).json(user);
-// }
-//
-// exports.getUsers = async (req, res) => {
-//   const users = await User.find({});
-//   res.status(200).json(users);
-// }
-
 exports.validateRegister = (req, res, next) => {
   req.sanitizeBody('firstName');
   req.checkBody('firstName', 'You must supply a first name!').notEmpty();
@@ -26,13 +12,14 @@ exports.validateRegister = (req, res, next) => {
   req.sanitizeBody('email').normalizeEmail({
     remove_dots: false,
     remove_extension: false,
-    gmail_remove_subaddress: false
+    gmail_remove_subaddress: false,
+    all_lowercase: false,
+    gmail_lowercase: false
   });
   req.checkBody('password', 'Password cannot be blank!').notEmpty();
   req.checkBody('passwordConfirmation', 'Confirmed password cannot be blank!').notEmpty();
   req.checkBody('passwordConfirmation', 'Oops! Your passwords do not match').equals(req.body.password);
   req.checkBody('dateOfBirth', 'Date of birth cannot be blank!').notEmpty();
-
   const errors = req.validationErrors();
   if (errors) {
     res.status(400).json(errors)
@@ -52,7 +39,7 @@ exports.register = async (req, res, next) => {
   });
   const register = promisify(User.register, User);
   await register(user, req.body.password);
-  next(); // Pass to authController.login
+  next(); // Pass to authController.authenticate
 };
 
 exports.updateUserSettings = async (req, res) => {
@@ -137,22 +124,19 @@ exports.updateUserPassword = async (req, res) => {
     });
   }
 }
-//
-// exports.account = (req, res) => {
-//   res.render('account', { title: 'Edit Your Account' });
-// }
-//
-// exports.updateAccount = async (req, res) => {
-//   const updates = {
-//     name: req.body.name,
-//     email: req.body.email
-//   };
-//
-//   const user = await User.findOneAndUpdate(
-//     { _id: req.user._id },
-//     { $set: updates },
-//     { new: true, runValidators: true, context: 'query' }
-//   );
-//   req.flash('success', 'Updated the profile!');
-//   res.redirect('back');
-// }
+
+exports.completeTutorialTour = async (req, res) => {
+  const user = await User.findOneAndUpdate(
+    { _id: req.body.userId },
+    {
+      $set: {
+        hasCompletedTutorialTour: true
+      }
+    }
+  )
+  if (!user) {
+    res.status(404).json({success: false, message: 'Could not complete tutorial tour at this time'});
+  } else {
+    res.status(200).json(user);
+  }
+}

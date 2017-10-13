@@ -52,8 +52,6 @@ const userSchema = new Schema({
     type: Date,
     required: true,
     validate: function (dateOfBirth) {
-      // Make sure date is in the past
-      let date = new Date(dateOfBirth)
       let now = new Date()
       now.setHours(0, 0, 0, 0)
       // Make sure user is at least 18
@@ -64,7 +62,7 @@ const userSchema = new Schema({
         age--
       }
 
-      return (date < now && age >= 18)
+      return (age >= 18)
     }
   },
   connectedTo: {
@@ -114,6 +112,11 @@ const userSchema = new Schema({
       type: Boolean,
       default: true
     },
+    showBeaconAddress: {
+      required: true,
+      type: Boolean,
+      default: false
+    },
     unitOfMeasurement: {
       required: true,
       type: String,
@@ -132,6 +135,10 @@ const userSchema = new Schema({
       type: String,
       default: '#FF0000'
     }
+  },
+  hasCompletedTutorialTour: {
+    type: Boolean,
+    default: false
   },
   outgoingConnectionRequest: {
     userId: {

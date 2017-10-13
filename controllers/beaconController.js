@@ -6,6 +6,7 @@ let distance = require('google-distance');
 distance.apiKey = process.env.DISTANCEMATRIX_API_KEY
 
 exports.lightBeacon = async (req, res) => {
+  await Beacon.remove({ author: req.body.author })
   const beacon = await(new Beacon(req.body)).save();
   const user = await User.findOne({_id: req.body.author});
   res.status(200).json(user)
@@ -18,8 +19,12 @@ exports.extinguishBeacon = async (req, res) => {
 };
 
 function filterBeacons (beacons, user) {
-  let filtered = beacons.filter((beacon) => {
+  let obj = JSON.parse(JSON.stringify(beacons));
+  let filtered = obj.filter((beacon) => {
     let keepBeacon = true;
+    if (!beacon.author || !beacon.author.settings || !beacon.author.settings.showBeaconAddress) {
+      beacon.address = null;
+    }
     let filterArray = [
       (user.age < beacon.additionalSettings.ageRange.min),
       (user.age > beacon.additionalSettings.ageRange.max),
@@ -68,6 +73,9 @@ exports.mapBeacons = async (req, res) => {
   const limit = checkMinMax(req.body.beaconLimit, 1, 100) || 50;
   let max = (unit === 'miles') ? radius * 1609.344 : radius * 1000;
   let q = {
+    author: {
+      $ne: req.body.user._id
+    },
     location: {
       $near: {
         $geometry: {
@@ -113,22 +121,6 @@ exports.checkBeaconDistance = (req, res, next) => {
     } else {
       return next();
     }
-  })
-}
-
-exports.getBeaconDistance = (req, res) => {
-  distance.get({
-    origin: `${req.body.userLat},${req.body.userLng}`,
-    destination: `${req.body.beaconLat},${req.body.beaconLng}`
-  },
-  (err, data) => {
-    if (err) {
-      res.status(404).json({ success: false, message: 'Unable to check beacon distance at this time' });
-      return;
-    }
-    // Must be within a certain radius to connect
-    data.canConnect = !(data.distanceValue > Number(process.env.CONNECTION_DISTANCE));
-    res.status(200).json(data);
   })
 }
 

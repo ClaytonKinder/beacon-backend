@@ -5,6 +5,7 @@
     "description": "Looking for people to come bask in the light of our glorious sun. Ahh, how grossly incandescent.",
     "author": "59c191aaf58284645a67ecd0",
     "color":"#FFFFFF",
+    "address": "2410 Raymond Ave, North Charleston, SC 29406, USA",
     "location":{
       "type":"Point",
       "coordinates":[
@@ -74,6 +75,7 @@
     "description": "Perhaps I could try some rolling? Bah, no chance. My head would spin. Mmm...",
     "author": "59c194e994fd361ccc03e673",
     "color":"#2FF20D",
+    "address": "2222 Kimbell Rd, Charleston, SC 29406, USA",
     "location":{
       "type":"Point",
       "coordinates":[
@@ -97,6 +99,7 @@
     "description": "The goddess Fina needs humanity. Pay your respects by helping me gather some.",
     "author": "59c193022c4d8546eea9cbde",
     "color":"#F00FCE",
+    "address": "2188 Kimbell Rd, North Charleston, SC 29406, USA",
     "location":{
       "type":"Point",
       "coordinates":[
@@ -116,10 +119,11 @@
   },
   {
     "_id":"59cb1a29c3368b2321466357",
-    "name": "Beacon of Clayton Kinder",
-    "description": "This is the beacon of Clayton Kinder and it should have two pending connection requests.",
+    "name": "Welcome!",
+    "description": "Thanks for using Beacon :)",
     "author": "59c4049b6ea92c74720f627a",
     "color":"#FF0000",
+    "address": "4850 Club Course Dr, North Charleston, SC 29420, USA",
     "location":{
       "type":"Point",
       "coordinates":[

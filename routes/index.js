@@ -4,6 +4,8 @@ const beaconController = require('../controllers/beaconController');
 const userController = require('../controllers/userController');
 const connectionController = require('../controllers/connectionController');
 const authController = require('../controllers/authController');
+const locationController = require('../controllers/locationController');
+const validationController = require('../controllers/validationController');
 const { catchErrors } = require('../handlers/errorHandlers');
 
 // Index
@@ -29,6 +31,11 @@ router.post('/user/updateuserpassword',
   userController.validatePasswordUpdate,
   catchErrors(userController.updateUserPassword)
 );
+router.post('/user/completetutorialtour',
+  authController.hasToken,
+  authController.checkUserAgainstToken,
+  catchErrors(userController.completeTutorialTour)
+);
 
 // Auth
 router.post('/auth/authenticate',
@@ -45,6 +52,11 @@ router.post('/auth/register',
   catchErrors(userController.register),
   authController.authenticate
 );
+router.post('/auth/deleteaccount',
+  authController.hasToken,
+  authController.checkUserAgainstToken,
+  authController.deleteAccount
+);
 router.post('/auth/forgotpassword',
   catchErrors(authController.forgotPassword)
 );
@@ -57,9 +69,15 @@ router.post('/auth/resetpassword',
 );
 
 // location
-router.post('/location/getbeacondistance',
+router.post('/location/getdistancebetweencoordinates',
   authController.hasToken,
-  beaconController.getBeaconDistance
+  locationController.getDistanceBetweenCoordinates
+);
+router.post('/location/getaddressfromcoordinates',
+  authController.hasToken,
+  authController.verifyUserId,
+  validationController.validateGetAddressFromCoordinates,
+  locationController.getAddressFromCoordinates
 );
 
 // Beacon
