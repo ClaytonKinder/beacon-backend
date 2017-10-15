@@ -94,6 +94,32 @@ const userSchema = new Schema({
       type: Number
     }
   },
+  correctedAddresses: [{
+    original: {
+      address: {
+        type: String,
+        maxLength: 150
+      },
+      lat: {
+        type: Number
+      },
+      lng: {
+        type: Number
+      }
+    },
+    corrected: {
+      address: {
+        type: String,
+        maxLength: 150
+      },
+      lat: {
+        type: Number
+      },
+      lng: {
+        type: Number
+      }
+    }
+  }],
   settings: {
     beaconLimit: {
       required: true,

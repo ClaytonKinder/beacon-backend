@@ -125,6 +125,59 @@ exports.updateUserPassword = async (req, res) => {
   }
 }
 
+exports.addCorrectedAddress = async (req, res) => {
+  const user = await User.findOne({ _id: req.body.userId })
+  if (!user) {
+    res.status(404).json({success: false, message: 'Could not add the corrected address at this time'});
+  } else {
+    let correctionAlreadyExists = false
+    let multipleCorrections = false
+    user.correctedAddresses.forEach((correction) => {
+      if (correction.original.address === req.body.addressChange.original.address) {
+        correctionAlreadyExists = true
+      }
+      if (correction.corrected.address === req.body.addressChange.original.address) {
+        multipleCorrections = true
+      }
+    })
+    if (correctionAlreadyExists) {
+      res.status(404).json({success: false, message: 'You have already made a correction for the original address'});
+    }
+    else if (multipleCorrections) {
+      res.status(404).json({success: false, message: 'Your original address cannot be the corrected address for a different correction'});
+    }
+    else {
+      if (user.correctedAddresses.length >= 10) {
+        user.correctedAddresses.splice(-1)
+      }
+      user.correctedAddresses.push(req.body.addressChange);
+      user.save();
+      res.status(200).json(user);
+    }
+  }
+}
+
+exports.deleteCorrectedAddress = async (req, res) => {
+  const user = await User.findOneAndUpdate(
+    { _id: req.body.userId },
+    {
+      $pull: {
+        'correctedAddresses': {
+          _id: req.body.correctedAddressId
+        }
+      }
+    },
+    {
+      new: true
+    }
+  )
+  if (!user) {
+    res.status(404).json({success: false, message: 'Could not delete the corrected address at this time'});
+  } else {
+    res.status(200).json(user);
+  }
+}
+
 exports.completeTutorialTour = async (req, res) => {
   const user = await User.findOneAndUpdate(
     { _id: req.body.userId },

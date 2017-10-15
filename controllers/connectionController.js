@@ -116,7 +116,8 @@ exports.cancelConnectionRequest = async (req, res) => {
           beaconOwnerId: req.body.beaconOwnerId,
         }
       }
-    }, {
+    },
+    {
       new: true
     }
   )

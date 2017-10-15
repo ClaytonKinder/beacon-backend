@@ -36,6 +36,16 @@ router.post('/user/completetutorialtour',
   authController.checkUserAgainstToken,
   catchErrors(userController.completeTutorialTour)
 );
+router.post('/user/addcorrectedaddress',
+  authController.hasToken,
+  authController.checkUserAgainstToken,
+  catchErrors(userController.addCorrectedAddress)
+);
+router.post('/user/deletecorrectedaddress',
+  authController.hasToken,
+  authController.checkUserAgainstToken,
+  catchErrors(userController.deleteCorrectedAddress)
+);
 
 // Auth
 router.post('/auth/authenticate',
@@ -78,6 +88,18 @@ router.post('/location/getaddressfromcoordinates',
   authController.verifyUserId,
   validationController.validateGetAddressFromCoordinates,
   locationController.getAddressFromCoordinates
+);
+router.post('/location/getcoordinatesfromaddress',
+  authController.hasToken,
+  authController.verifyUserId,
+  validationController.validateGetCoordinatesFromAddress,
+  locationController.getCoordinatesFromAddress
+);
+router.post('/location/autocompleteaddress',
+  authController.hasToken,
+  authController.verifyUserId,
+  validationController.validateAutocompleteAddress,
+  locationController.autocompleteAddress
 );
 
 // Beacon

@@ -13,7 +13,31 @@ exports.getAddressFromCoordinates = async (req, res) => {
     function (error, response) {
       if (!error && response.statusCode === 200) {
         let obj = JSON.parse(response.body)
-        res.status(200).json(obj.results[0].formatted_address);
+        if (obj.results[0] && obj.results[0].formatted_address) {
+          res.status(200).json(obj.results[0].formatted_address);
+        } else {
+          res.status(404).json({ success: false, message: 'Could not get address data at this time' });
+        }
+      } else {
+        res.status(404).json(error);
+      }
+    }
+  )
+}
+
+exports.getCoordinatesFromAddress = async (req, res) => {
+  request(
+    {
+      uri: `https://maps.googleapis.com/maps/api/geocode/json?address=${req.body.address}&key=${process.env.GEOCODING_API_KEY}`
+    },
+    function (error, response) {
+      if (!error && response.statusCode === 200) {
+        let obj = JSON.parse(response.body)
+        if (obj.results[0] && obj.results[0].geometry && obj.results[0].geometry.location) {
+          res.status(200).json(obj.results[0].geometry.location);
+        } else {
+          res.status(404).json({ success: false, message: 'Could not get address data at this time' });
+        }
       } else {
         res.status(404).json(error);
       }
@@ -32,7 +56,30 @@ exports.getDistanceBetweenCoordinates = (req, res) => {
       return;
     }
     // Must be within a certain radius to connect
-    data.canConnect = !(data.distanceValue > Number(process.env.CONNECTION_DISTANCE));
+    data.canConnect = !(data.distanceValue >= Number(process.env.CONNECTION_DISTANCE));
+    data.canUpdateAddress = !(data.distanceValue >= 250);
     res.status(200).json(data);
   })
+}
+
+exports.autocompleteAddress = async (req, res) => {
+  request(
+    {
+      uri: `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${req.body.address}&key=${process.env.PLACES_API_KEY}`
+    },
+    function (error, response) {
+      if (!error && response.statusCode === 200) {
+        let obj = JSON.parse(response.body)
+        let cleansed = obj.predictions.map((location) => {
+          return {
+            label: location.description,
+            value: location.description
+          }
+        })
+        res.status(200).json(cleansed);
+      } else {
+        res.status(404).json(error);
+      }
+    }
+  )
 }

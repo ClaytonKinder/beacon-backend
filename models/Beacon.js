@@ -37,7 +37,7 @@ const beaconSchema = new mongoose.Schema({
   address: {
     type: String,
     required: true,
-    maxLength: 100
+    maxLength: 150
   },
   location: {
     type: {
