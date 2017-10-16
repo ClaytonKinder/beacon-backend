@@ -159,7 +159,7 @@ const userSchema = new Schema({
     defaultColor: {
       required: true,
       type: String,
-      default: '#FF0000'
+      default: '#D50000'
     }
   },
   hasCompletedTutorialTour: {
