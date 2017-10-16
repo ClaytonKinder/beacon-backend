@@ -126,6 +126,11 @@ router.post('/beacon/getconnectedbeaconinformation',
   authController.hasToken,
   catchErrors(beaconController.getConnectedBeaconInformation)
 );
+router.post('/beacon/getsinglebeacon',
+  authController.hasToken,
+  authController.checkUserAgainstToken,
+  catchErrors(beaconController.getSingleBeacon)
+);
 
 // Connections
 router.post('/connection/createconnectionrequest',

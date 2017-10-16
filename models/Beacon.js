@@ -26,7 +26,11 @@ const beaconSchema = new mongoose.Schema({
   },
   created: {
     type: Date,
-    default: Date.now
+    required: true
+  },
+  expiration: {
+    type: Date,
+    required: true
   },
   author: {
     type: mongoose.Schema.ObjectId,
@@ -74,6 +78,9 @@ const beaconSchema = new mongoose.Schema({
     created: {
       type: Date
     },
+    beaconExpiration: {
+      type: Date
+    },
     lat: {
       type: Number
     },
@@ -103,6 +110,9 @@ const beaconSchema = new mongoose.Schema({
       type: String
     },
     created: {
+      type: Date
+    },
+    beaconExpiration: {
       type: Date
     },
     lat: {
@@ -149,10 +159,9 @@ const beaconSchema = new mongoose.Schema({
 // Define our indexes
 beaconSchema.index({
   name: 'text',
-  description: 'text'
+  description: 'text',
+  location: '2dsphere'
 });
-
-beaconSchema.index({ location: '2dsphere' });
 
 beaconSchema.pre('save', function(next) {
     var beacon = this;

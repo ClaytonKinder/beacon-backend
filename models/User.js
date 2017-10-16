@@ -54,14 +54,12 @@ const userSchema = new Schema({
     validate: function (dateOfBirth) {
       let now = new Date()
       now.setHours(0, 0, 0, 0)
-      // Make sure user is at least 18
       let dob = new Date(dateOfBirth)
       var age = now.getFullYear() - dob.getFullYear()
       var m = now.getMonth() - dob.getMonth()
       if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) {
         age--
       }
-
       return (age >= 18)
     }
   },
@@ -85,6 +83,9 @@ const userSchema = new Schema({
       type: String
     },
     created: {
+      type: Date
+    },
+    beaconExpiration: {
       type: Date
     },
     lng: {
@@ -186,6 +187,9 @@ const userSchema = new Schema({
       type: String
     },
     created: {
+      type: Date
+    },
+    beaconExpiration: {
       type: Date
     },
     lng: {

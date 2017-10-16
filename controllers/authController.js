@@ -145,6 +145,9 @@ exports.isAuth = (req, res) => {
           if (!user) {
             res.status(400).json({ success: false, message: 'Authentication failed. User not found.' });
           } else if (user) {
+            if (user.beacon && user.beacon.additionalSettings.password) {
+              user.beacon.additionalSettings.password = '**********';
+            }
             res.status(200).send(user)
           }
         })

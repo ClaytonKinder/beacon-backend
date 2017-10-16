@@ -71,7 +71,8 @@ exports.createConnectionRequest = async (req, res) => {
           gravatar: req.body.gravatar,
           lat: req.body.lat,
           lng: req.body.lng,
-          created: Date.now()
+          created: Date.now(),
+          beaconExpiration: req.body.beaconExpiration
         }
       }
     }, {
@@ -93,7 +94,8 @@ exports.createConnectionRequest = async (req, res) => {
           gravatar: req.body.gravatar,
           lat: req.body.lat,
           lng: req.body.lng,
-          created: Date.now()
+          created: Date.now(),
+          beaconExpiration: req.body.beaconExpiration
         }
       }
     }, {
@@ -166,6 +168,18 @@ exports.denyConnectionRequest = async (req, res) => {
 
 exports.approveConnectionRequest = async (req, res) => {
   let date = Date.now()
+  await Beacon.findOneAndUpdate(
+    { _id: req.body.beaconId },
+    {
+      $pull: {
+        'connections': {
+          userId: req.body.userId,
+        }
+      }
+    }, {
+      new: true
+    }
+  )
   const beaconPromise = Beacon.findOneAndUpdate(
     { _id: req.body.beaconId },
     {
@@ -184,7 +198,8 @@ exports.approveConnectionRequest = async (req, res) => {
           ownerName: req.body.ownerName,
           name: req.body.name,
           gravatar: req.body.gravatar,
-          created: date
+          created: date,
+          beaconExpiration: req.body.beaconExpiration
         }
       }
     }, {
@@ -205,7 +220,8 @@ exports.approveConnectionRequest = async (req, res) => {
           gravatar: req.body.gravatar,
           lat: req.body.lat,
           lng: req.body.lng,
-          created: date
+          created: date,
+          beaconExpiration: req.body.beaconExpiration
         }
       }
     }, {

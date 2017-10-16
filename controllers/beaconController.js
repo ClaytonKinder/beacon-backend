@@ -1,15 +1,21 @@
 const mongoose = require('mongoose');
 const Beacon = mongoose.model('Beacon');
 const User = mongoose.model('User');
-const { checkMinMax } = require('../helpers');
+const { checkMinMax, eventEmitter } = require('../helpers');
 let distance = require('google-distance');
+var CronJob = require('cron').CronJob;
 distance.apiKey = process.env.DISTANCEMATRIX_API_KEY
 
 exports.lightBeacon = async (req, res) => {
-  await Beacon.remove({ author: req.body.author })
+  await Beacon.remove({ author: req.body.author });
+  let date = new Date();
+  let date2 = new Date(date);
+  req.body.created = date;
+  let futureDate = date2.setHours(date2.getHours() + 24);
+  req.body.expiration = futureDate;
   const beacon = await(new Beacon(req.body)).save();
   const user = await User.findOne({_id: req.body.author});
-  res.status(200).json(user)
+  res.status(200).json(user);
 };
 
 exports.extinguishBeacon = async (req, res) => {
@@ -154,3 +160,61 @@ exports.verifyBeaconPassword = (req, res) => {
     }
   });
 }
+
+exports.getSingleBeacon = async (req, res) => {
+  let beacon = await Beacon.findOne({
+    _id: req.body.beaconId
+  }).populate('author');
+  if (!beacon.author.settings.showBeaconAddress) {
+    beacon.address = null
+  }
+  if (!beacon) {
+    res.status(400).json({ success: false, message: 'That beacon does not exist' });
+  } else {
+    res.status(200).json(beacon)
+  }
+}
+
+exports.deleteExpiredBeacons = async () => {
+  let now = new Date();
+  // let date = new Date();
+  // let now = date.setHours(date.getHours() + 24);
+  const deleteBeaconPromise = Beacon.remove({
+    expiration: {
+      $lte: now
+    }
+  });
+  const deleteConnectedBeaconPromise = User.update(
+    {
+      'connectedTo.beaconExpiration': {
+        $lte: now
+      }
+    },
+    {
+      $unset: {
+        connectedTo: ''
+      }
+    }, {
+      multi: true
+    }
+  )
+  const deleteOutgoingRequestPromise = User.update(
+    {
+      'outgoingConnectionRequest.beaconExpiration': {
+        $lte: now
+      }
+    },
+    {
+      $unset: {
+        outgoingConnectionRequest: ''
+      }
+    }, {
+      multi: true
+    }
+  )
+  Promise.all([deleteBeaconPromise, deleteConnectedBeaconPromise, deleteOutgoingRequestPromise]);
+}
+
+new CronJob('* * * * *', () => {
+  this.deleteExpiredBeacons()
+}, null, true, 'America/New_York');

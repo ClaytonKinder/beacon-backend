@@ -1,3 +1,5 @@
+const { eventEmitter } = require('./helpers');
+
 module.exports = function (io) {
 
   function createMessage (data) {
@@ -57,7 +59,6 @@ module.exports = function (io) {
   function socketEmit (data, type) {
     // toId (either this or toIds, not both)
     // toIds (either this or toId, not both)
-    // fromName
     // fromId
     if (data.toId) {
       if (getSocketByUserId(data.toId)) {
@@ -91,29 +92,26 @@ module.exports = function (io) {
         delete io.sockets.connected[getSocketByUserId(data.userId).id];
       }
     });
-    socket.on('disconnect', function(){
-      // console.log(Object.keys(io.sockets.connected).length);
-    });
     socket.on('denyConnectionRequest', function (data) {
-      socketEmit(data, 'denyConnectionRequest')
+      socketEmit(data, 'denyConnectionRequest');
     });
     socket.on('approveConnectionRequest', function (data) {
-      socketEmit(data, 'approveConnectionRequest')
+      socketEmit(data, 'approveConnectionRequest');
     });
     socket.on('disconnectFromBeacon', function (data) {
-      socketEmit(data, 'disconnectFromBeacon')
+      socketEmit(data, 'disconnectFromBeacon');
     });
     socket.on('removeConnection', function (data) {
-      socketEmit(data, 'removeConnection')
+      socketEmit(data, 'removeConnection');
     });
     socket.on('extinguishBeacon', function (data) {
-      socketEmit(data, 'extinguishBeacon')
+      socketEmit(data, 'extinguishBeacon');
     });
     socket.on('cancelConnectionRequest', function (data) {
-      socketEmit(data, 'cancelConnectionRequest')
+      socketEmit(data, 'cancelConnectionRequest');
     });
     socket.on('createConnectionRequest', function (data) {
-      socketEmit(data, 'createConnectionRequest')
+      socketEmit(data, 'createConnectionRequest');
     });
   });
 }
