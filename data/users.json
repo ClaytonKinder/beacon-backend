@@ -97,7 +97,7 @@
     "password":"$2a$10$sU7lYy6yIZl0eCCDOPajYe3qT0Sc2UYfSAhQ.nEJT.Xo09PlOxuvG",
     "firstName":"Siegmeyer",
     "lastName":"of Catarina",
-    "dateOfBirth": "1965-01-08T04:00:00.000Z",
+    "dateOfBirth": "1985-01-08T04:00:00.000Z",
     "settings":{
       "beaconLimit": 50,
       "defaultColor":"#D50000",

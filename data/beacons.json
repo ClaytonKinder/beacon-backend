@@ -6,6 +6,8 @@
     "author": "59c191aaf58284645a67ecd0",
     "color":"#FFFFFF",
     "address": "2410 Raymond Ave, North Charleston, SC 29406, USA",
+    "created": "Thu Oct 19 2017 16:30:20 GMT-0400 (Eastern Daylight Time)",
+    "expiration": "1508531420629",
     "location":{
       "type":"Point",
       "coordinates":[
@@ -76,6 +78,8 @@
     "author": "59c194e994fd361ccc03e673",
     "color":"#2FF20D",
     "address": "2222 Kimbell Rd, Charleston, SC 29406, USA",
+    "created": "Thu Oct 19 2017 16:30:20 GMT-0400 (Eastern Daylight Time)",
+    "expiration": "1508531420629",
     "location":{
       "type":"Point",
       "coordinates":[
@@ -100,6 +104,8 @@
     "author": "59c193022c4d8546eea9cbde",
     "color":"#F00FCE",
     "address": "2188 Kimbell Rd, North Charleston, SC 29406, USA",
+    "created": "Thu Oct 19 2017 16:30:20 GMT-0400 (Eastern Daylight Time)",
+    "expiration": "1508531420629",
     "location":{
       "type":"Point",
       "coordinates":[
@@ -124,6 +130,8 @@
     "author": "59c4049b6ea92c74720f627a",
     "color":"#FF0000",
     "address": "4850 Club Course Dr, North Charleston, SC 29420, USA",
+    "created": "Thu Oct 19 2017 16:30:20 GMT-0400 (Eastern Daylight Time)",
+    "expiration": "1508531420629",
     "location":{
       "type":"Point",
       "coordinates":[
