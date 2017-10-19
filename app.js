@@ -5,9 +5,8 @@ const MongoStore = require('connect-mongo')(session);
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-// const passport = require('passport');
 const promisify = require('es6-promisify');
-const flash = require('connect-flash');
+// const flash = require('connect-flash');
 const expressValidator = require('express-validator');
 const routes = require('./routes/index');
 const helpers = require('./helpers');
@@ -17,6 +16,9 @@ const jwt = require('jsonwebtoken');
 
 // create our Express app
 const app = express();
+
+app.set('views', path.join(__dirname, 'views')); // this is the folder where we keep our pug files
+app.set('view engine', 'pug'); // we use the engine pug, mustache or EJS work great too
 
 // Takes the raw requests and turns them into usable properties on req.body
 app.use(bodyParser.json());
@@ -39,17 +41,9 @@ app.use(session({
 }));
 app.set('superSecret', process.env.SECRET);
 
-// // Passport JS is what we use to handle our logins
-// app.use(passport.initialize());
-// app.use(passport.session());
-
-// // The flash middleware let's us use req.flash('error', 'Shit!'), which will then pass that message to the next page the user requests
-app.use(flash());
-
 // pass variables to our templates + all requests
 app.use((req, res, next) => {
   res.locals.h = helpers;
-  res.locals.flashes = req.flash();
   res.locals.user = req.user || null;
   res.locals.currentPath = req.path;
   // Website you wish to allow to connect
@@ -76,16 +70,13 @@ app.get('/', (req, res) => {
   res.redirect('/api/v1/');
 });
 
-// After allllll that above middleware, we finally handle our own routes!
+// After the above middleware, we finally handle our own routes!
 app.use('/api/v1/', routes);
-// app.use(express.static(__dirname))
-// app.use((req, res) => res.sendFile(`${__dirname}/index.html`))
 
 // If that above routes didnt work, we 404 them and forward to error handler
 app.use(errorHandlers.notFound);
 
 // One of our error handlers will see if these errors are just validation errors
-app.use(errorHandlers.flashValidationErrors);
 
 // Otherwise this was a really bad error we didn't expect! Shoot eh
 if (app.get('env') === 'development') {
