@@ -1,6 +1,6 @@
 ![Beacon header](./readme-header.png)
 
-# [Beacon](https://www.beaconapp.fun)
+# [Beacon](https://ck-beacon-frontend.herokuapp.com/)
 
 > An app for connecting people with those around them
 
